@@ -1,104 +1,100 @@
 package etvfit.appcode;
 
+import java.util.*;
 import java.io.*;
 
-public class Medication implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	public static final int HOURS = 1;
-	public static final int DAYS = 2;
-	
-	private int dosage;			//take X units each time
-	private int numDosages;		//remaining doses
-	private String givenFor;	//reason given
-	private String name;		
-	private int takeEvery;		//take a dose
-	private int timeUnits;		//every these units
-	
-	public Medication(String name, int dosage, int takeEvery, int timeUnits,
-			int numDosages, String givenFor) {
-		//Eclipse put a super(); in here but I don't know why or think we need it.
-		this.name = name;
-		this.dosage = dosage;
-		this.takeEvery = takeEvery;
-		this.setTimeUnits(timeUnits);
-		this.numDosages = numDosages;
-		this.givenFor = givenFor;
-	}
-	
-	public String toString(){
-		return name;
-	}
-	
-	public int getDosage() {
-		return dosage;
-	}
-	
-	public int getNumDosages() {
-		return numDosages;
-	}
-	
-	public String getGivenFor() {
-		return givenFor;
-	}
+public class Medication implements Serializable {
 
-	public String getName() {
-		return name;
-	}
+    /**
+     *
+     */
+    public static final int HOURS = 1;
+    public static final int DAYS = 2;
+    private static final long serialVersionUID = 1L;
 
-	public int getTakeEvery() {
-		return takeEvery;
-	}
+    private int dosage;         	//take X units each time
+    private int numDosages;     	//number of dosages
+    private String givenFor;    	//reason given
+    private String name;	    	//uh, duh.
+    private int takeEvery;          //take a dose
+    private int timeUnits = HOURS;  //units
+    private Doctor docWhoPrescribed;
+    private int NOD;                 //number of dosages to take at a time.
 
-	public boolean refillInDays(int numOfDays){
-		//returns true if the perscription must be refilled in <= number of days 
-		//given as parameter; otherwise false
-		
-		return false;
-	}
+    public int getNOD() {
+        return NOD;
+    }
 
-	public void setDosage(int dosage) {
-		this.dosage = dosage;
-	}
+    public void setNOD(int NOD) {
+        this.NOD = NOD;
+    }
+    public Medication(int dosage, int numDosages, String givenFor, String name, int takeEvery, Doctor docWhoPrescribed, int NOD) {
+        this.dosage = dosage;
+        this.numDosages = numDosages;
+        this.givenFor = givenFor;
+        this.name = name;
+        this.takeEvery = takeEvery;
+        this.docWhoPrescribed = docWhoPrescribed;
+        this.NOD = NOD;
+    }
 
-	public void setNumDosages(int numDosages) {
-		this.numDosages = numDosages;
-	}
+    public Doctor getDocWhoPrescribed() {
+        return docWhoPrescribed;
+    }
 
-	public void setGivenFor(String givenFor) {
-		this.givenFor = givenFor;
-	}
+    public void setDocWhoPrescribed(Doctor docWhoPrescribed) {
+        this.docWhoPrescribed = docWhoPrescribed;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public int getDosage() {
+        return dosage;
+    }
 
-	public void setTakeEvery(int takeEvery) {
-		this.takeEvery = takeEvery;
-	}
+    public void setDosage(int dosage) {
+        this.dosage = dosage;
+    }
 
-	public boolean takeInDays(int numOfDays){
-		//returns true if the perscription must be taken in <= number of days 
-		//given as parameter; otherwise false
-		
-		return false;
-	}
+    public String getGivenFor() {
+        return givenFor;
+    }
 
-	public boolean takeInHours(int numOfHours){
-		//returns true if the perscription must be taken in <= number of hours 
-		//given as parameter; otherwise false
-		
-		return false;
-	}
+    public void setGivenFor(String givenFor) {
+        this.givenFor = givenFor;
+    }
 
-	public void setTimeUnits(int timeUnits) {
-		this.timeUnits = timeUnits;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public int getTimeUnits() {
-		return timeUnits;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getNumDosages() {
+        return numDosages;
+    }
+
+    public void setNumDosages(int numDosages) {
+        this.numDosages = numDosages;
+    }
+
+    public int getTakeEvery() {
+        return takeEvery;
+    }
+
+    public void setTakeEvery(int takeEvery) {
+        this.takeEvery = takeEvery;
+    }
+
+    public int getTimeUnits() {
+        return timeUnits;
+    }
+
+    public void setTimeUnits(int timeUnits) {
+        this.timeUnits = timeUnits;
+    }
+
+
+
+
 }

@@ -6,7 +6,6 @@ package etvfit;
 
 import org.jdesktop.application.Action;
 
-@SuppressWarnings("serial")
 public class ETVFitAboutBox extends javax.swing.JDialog {
 
     public ETVFitAboutBox(java.awt.Frame parent) {
