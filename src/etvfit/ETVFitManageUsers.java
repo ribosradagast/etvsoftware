@@ -313,6 +313,7 @@ public class ETVFitManageUsers extends javax.swing.JDialog {
             int index = usersList.getSelectedIndex();
             users.get(index).setUsername(userTextField.getText());
             users.get(index).setPassword(passTextField.getText());
+            
         }
 
         //disable the textboxes and clear them.

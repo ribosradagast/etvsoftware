@@ -9,7 +9,7 @@ public class Parent extends User implements Serializable {
      *
      */
     private static final long serialVersionUID = 8980166716105828325L;
-    public Vector<User> children;
+    public Vector<User> children = new Vector<User> ();
 
     public Parent(String username, String password) {
         super(username, password);
@@ -21,7 +21,6 @@ public class Parent extends User implements Serializable {
 			String username, String allergies) {
 		super(name, age, sex, address1, city, state, zip, insuranceProvider,
 				insuranceNumber, password, phone, username, allergies);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void addNewChild(User newKid) {
