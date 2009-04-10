@@ -39,6 +39,14 @@ public class Doctor implements Serializable{
 		
 	}
 
+	public Doctor() {
+		address1 = "";		//address line 1
+		address2 = "";		//address line 2
+		name = "";			
+		phone = "";			//phone number
+		speciality = "";	//speciality if applicable
+	}
+
 	public String getAddress1() {
 		return address1;
 	}

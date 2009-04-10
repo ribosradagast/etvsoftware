@@ -21,7 +21,9 @@ public class Medication implements Serializable{
     private int NOD;                 //number of dosages to take at a time.
 	
 	public Medication(){
-	//TODO	
+		givenFor = "";
+		name = "";
+		docWhoPrescribed = new Doctor();
 	}
 	
 	public Medication(String name, int dosage, int takeEvery, int timeUnits,
@@ -44,15 +46,6 @@ public class Medication implements Serializable{
     }
 
     public void setNOD(int NOD) {
-        this.NOD = NOD;
-    }
-    public Medication(int dosage, int numDosages, String givenFor, String name, int takeEvery, Doctor docWhoPrescribed, int NOD) {
-        this.dosage = dosage;
-        this.numDosages = numDosages;
-        this.givenFor = givenFor;
-        this.name = name;
-        this.takeEvery = takeEvery;
-        this.docWhoPrescribed = docWhoPrescribed;
         this.NOD = NOD;
     }
 
