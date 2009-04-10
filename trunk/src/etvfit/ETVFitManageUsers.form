@@ -170,6 +170,7 @@
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
           <action class="etvfit.ETVFitManageUsers" id="boxEdited" methodName="boxEdited"/>
         </Property>
+        <Property name="enabled" type="boolean" value="false"/>
         <Property name="name" type="java.lang.String" value="userTextField" noResource="true"/>
       </Properties>
       <Events>
@@ -182,6 +183,7 @@
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
           <action class="etvfit.ETVFitManageUsers" id="boxEdited" methodName="boxEdited"/>
         </Property>
+        <Property name="enabled" type="boolean" value="false"/>
         <Property name="name" type="java.lang.String" value="passTextField" noResource="true"/>
       </Properties>
       <Events>

@@ -10,59 +10,28 @@ public class User implements Serializable {
      */
     public static final boolean MALE=true;
     
+    private static final long serialVersionUID = -1426153572408063526L;
+     private String name;   //duh
+      private int age;            //duh
+      private boolean sex =MALE;
+    private String address1;    //duh
+
     public Vector<Appointment> appointments = new Vector<Appointment>();
     public Vector<Medication> medications = new Vector<Medication>();
     private Vector<Doctor> specialists = new Vector<Doctor>();
-    
-    private static final long serialVersionUID = -1426153572408063526L;
-    private String name = "";
-    private int age = 0;
-    private boolean sex =MALE;
-    private String address1 = "";
-    private String city = "";
-    private String state = "";
-    private String zip = "";
-    private String insuranceProvider = "";	//insurance company
-    private String insuranceNumber = "";	//number on insurance policy
-    private String password = "";			//password
-    private String phone = "";				//user's phone number
-    private Doctor primaryPhysician = null;
-    private String username = "";			//user's login name
-    private String allergies = "";
-    
-    public String getState() {
-		return state;
-	}
 
-	public void setState(String state) {
-		this.state = state;
-	}
+    private String address2;    //duh
 
-	public String getZip() {
-		return zip;
-	}
+  
+    private String insurance;   //insurance company
+    private String password;    //password
+    private String phone;       //user's phone number
+    private Doctor primaryPhysician;
+    private String username;    //user's login name
+    private String allergies;
 
-	public void setZip(String zip) {
-		this.zip = zip;
-	}
 
-	public String getInsuranceProvider() {
-		return insuranceProvider;
-	}
-
-	public void setInsuranceProvider(String insuranceProvider) {
-		this.insuranceProvider = insuranceProvider;
-	}
-
-	public String getInsuranceNumber() {
-		return insuranceNumber;
-	}
-
-	public void setInsuranceNumber(String insuranceNumber) {
-		this.insuranceNumber = insuranceNumber;
-	}
-
-	public boolean getSex() {	//TODO: getSex() more often!!! ;D
+    public boolean getSex() {
         return sex;
     }
 
@@ -79,41 +48,52 @@ public class User implements Serializable {
     }
 
     public User(String username, String password) {
-		super();
-		this.password = password;
-		this.username = username;
-	}
+        this.username = username;
+        this.password = password;
+        this.address1 = "";
+        this.address2 = "";
+        this.age = 0;
+        this.name = "";
+        this.insurance = "";
+        this.phone = "";
+        this.allergies = "";
+        this.sex=MALE;
+    }
 
-	public User(String name, int age, boolean sex,
-			String address1, String city, String state, String zip,
-			String insuranceProvider, String insuranceNumber, String password,
-			String phone, String username,
-			String allergies) {
-		super();
-		this.name = name;
-		this.age = age;
-		this.sex = sex;
-		this.address1 = address1;
-		this.city = city;
-		this.state = state;
-		this.zip = zip;
-		this.insuranceProvider = insuranceProvider;
-		this.insuranceNumber = insuranceNumber;
-		this.password = password;
-		this.phone = phone;
-		this.username = username;
-		this.allergies = allergies;
-	}
+    public User(String address1, String address2, int age, 
+            String insurance, boolean isParent, String name,
+            String password, String phone, String username, String allergies, boolean sex) {
+        super();
+        this.address1 = address1;
+        this.address2 = address2;
+        this.age = age;
+        this.name = name;
+        this.insurance = insurance;
+        this.password = password;
+        this.phone = phone;
+        this.username = username;
+        this.allergies = allergies;
+        this.sex=sex;
+    }
 
-	public String getAddress1() {
+    public String getAddress1() {
         return address1;
     }
+
+    public String getAddress2() {
+        return address2;
+    }
+
     public int getAge() {
         return age;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getInsurance() {
+        return insurance;
     }
 
  
@@ -142,12 +122,20 @@ public class User implements Serializable {
         this.address1 = address1;
     }
 
+    public void setAddress2(String address2) {
+        this.address2 = address2;
+    }
+
     public void setAge(int age) {
         this.age = age;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setInsurance(String insurance) {
+        this.insurance = insurance;
     }
 
     public void setPassword(String password) {
@@ -206,18 +194,10 @@ public class User implements Serializable {
     }
 
     public String mailingLabel() {
-        return name + "\n" + address1 + "\n" + city+ ", "+state+" "+zip;
+        return name + "\n" + address1 + "\n" + address2;
     }
 
     public String toString() {
         return username;
     }
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getCity() {
-		return city;
-	}
 }

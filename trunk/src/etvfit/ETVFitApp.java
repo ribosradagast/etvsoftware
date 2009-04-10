@@ -3,7 +3,10 @@
  */
 package etvfit;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -43,7 +46,7 @@ public class ETVFitApp extends SingleFrameApplication {
                 // Logger.getLogger(ETVFitApp.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(new java.awt.Frame(), "So we will start off with a blank program!",
                         "There was no save file found...", JOptionPane.INFORMATION_MESSAGE);
-                dataHolder = new DataHolder();
+                dataHolder=new DataHolder();
             } finally {
                 try {
                     in.close();
