@@ -1,25 +1,43 @@
 package etvfit.appcode;
 
-import java.util.*;
 import java.io.*;
 
-public class Medication implements Serializable {
-
-    /**
-     *
-     */
-    public static final int HOURS = 1;
-    public static final int DAYS = 2;
-    private static final long serialVersionUID = 1L;
-
-    private int dosage;         	//take X units each time
-    private int numDosages;     	//number of dosages
-    private String givenFor;    	//reason given
-    private String name;	    	//uh, duh.
-    private int takeEvery;          //take a dose
-    private int timeUnits = HOURS;  //units
-    private Doctor docWhoPrescribed;
+public class Medication implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	public static final int HOURS = 1;
+	public static final int DAYS = 2;
+	
+	private int dosage;			//take X units each time
+	private int numDosages;		//remaining doses
+	private String givenFor;	//reason given
+	private String name;		
+	private int takeEvery;		//take a dose
+	private int timeUnits;		//every these units
+	private Doctor docWhoPrescribed;
     private int NOD;                 //number of dosages to take at a time.
+	
+	public Medication(){
+	//TODO	
+	}
+	
+	public Medication(String name, int dosage, int takeEvery, int timeUnits,
+			int numDosages, String givenFor) {
+		//Eclipse put a super(); in here but I don't know why or think we need it.
+		this.name = name;
+		this.dosage = dosage;
+		this.takeEvery = takeEvery;
+		this.setTimeUnits(timeUnits);
+		this.numDosages = numDosages;
+		this.givenFor = givenFor;
+	}
+	
+	public String toString(){
+		return name;
+	}
 
     public int getNOD() {
         return NOD;
@@ -93,8 +111,5 @@ public class Medication implements Serializable {
     public void setTimeUnits(int timeUnits) {
         this.timeUnits = timeUnits;
     }
-
-
-
 
 }
