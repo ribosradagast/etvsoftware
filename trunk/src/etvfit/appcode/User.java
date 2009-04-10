@@ -78,7 +78,7 @@ public class User implements Serializable {
         this.allergies = allergies;
     }
 
-    public User(String password, String username) {
+    public User(String username, String password) {
 		super();
 		this.password = password;
 		this.username = username;
