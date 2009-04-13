@@ -75,7 +75,17 @@ public class ETVFitApp extends SingleFrameApplication {
             }
         }
 //        else {
-            Login login = new Login(new java.awt.Frame(), true, this.dataHolder.users);
+        // Populate all users and their children
+        Vector<User> allUsers =new Vector<User>();
+        allUsers.addAll(this.dataHolder.users);
+        for(User u:  this.dataHolder.users){
+            try{
+                allUsers.addAll(((Parent)u).children);
+            }catch(ClassCastException e){
+                //Don't add them
+            }
+        }
+            Login login = new Login(new java.awt.Frame(), true, allUsers);
             show(login);
             if (login.getReturnStatus() == Login.RET_OK) {
                 show(new ETVFitView(this, login.getUser()));
@@ -99,9 +109,9 @@ public class ETVFitApp extends SingleFrameApplication {
     public void SaveInfo(User currentUser) {
         ///Stick in this user
         //it's already in my users...
-        dataHolder.users.remove(dataHolder.users.indexOf(currentUser));
+     //   dataHolder.users.remove(dataHolder.users.indexOf(currentUser));
         //now add it back in
-         dataHolder.users.add(currentUser);
+      //   dataHolder.users.add(currentUser);
 
         FileOutputStream fos = null;
         {

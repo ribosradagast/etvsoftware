@@ -6,6 +6,7 @@ package etvfit;
 import etvfit.appcode.*;
 import java.awt.Component;
 import java.awt.Image;
+import javax.swing.event.ListSelectionEvent;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -28,7 +29,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 import org.jdesktop.application.ApplicationContext;
 import org.jdesktop.application.ResourceManager;
 
@@ -38,6 +46,10 @@ import org.jdesktop.application.ResourceManager;
 public class ETVFitView extends FrameView {
 
     User user = null;
+    User prevUser = null;
+    Calendar startDate;
+    Calendar endDate;
+    Calendar today;
     ETVFitApp app;
 
     public ETVFitView(ETVFitApp app, User userOn) {
@@ -45,6 +57,22 @@ public class ETVFitView extends FrameView {
         this.user = userOn;
         this.app = app;
         initComponents();
+
+        //OK, Let's dis-allow Children (who are not Parents)
+        try {
+            //Some bogus statement to test for Parent or not
+            Parent p = ((Parent) user);
+        } catch (ClassCastException c) {
+            //If it's just a Child (User) then disable the Save option in the menu
+            saveAllMenuItem.setEnabled(false);
+            JOptionPane.showMessageDialog(new java.awt.Frame(),
+                    "Welcome to Child Mode.  \nThe results of this session cannot be saved because you are a Child." +
+                    "\nIn order to save your session results, please have your Parent log on \n" +
+                    "and reenter your information through their \"Child-Editing Mode.\"",
+                    "Child Mode", JOptionPane.ERROR_MESSAGE);
+        }
+
+        welcomeNameLabel.setText(user.getUsername());
 
         this.getFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.getFrame().addWindowListener(new WindowAdapter() {
@@ -54,22 +82,56 @@ public class ETVFitView extends FrameView {
             }
         });
 
-        loadData();
+        scheduleTable.getSelectionModel().addListSelectionListener(
+                new ListSelectionListener() {
+
+                    public void valueChanged(ListSelectionEvent event) {
+
+                        int row = scheduleTable.getSelectedRow();
+                        int column = scheduleTable.getSelectedColumn();
+                        //Check to see if anything's actually selected
+                        if (row >= 0 && column >= 0) {
+                            Object data = scheduleTable.getModel().getValueAt(row, column);
+
+                            if (data == null || data.toString().equals("No items")) {
+                                //do nothing
+                                editAppointmentButton.setEnabled(false);
+                            } else {
+                                editAppointmentButton.setEnabled(true);
+                            }
+                        }
+                    }
+                });
 
         //   this.childEditingLabel.setVisible(false);
 
-        //Populate the Medications box
-        //   this.currentMedicationsList.setListData(listData);
 
 
+
+//Disable the buttons that are enabled by actions.
+        editAppointmentButton.setEnabled(false);
+        saveMyChangesButton.setEnabled(false);
+        editMedicationButton.setEnabled(false);
+        stopMedicationButton.setEnabled(false);
+        savePrimaryButton.setEnabled(false);
+        saveSpecialistButton.setEnabled(false);
+        jButton3.setEnabled(false);
+        jButton6.setEnabled(false);
+
+//Put on the dates: current and week-of
         DateFormat dfm = new SimpleDateFormat("MMMM dd, yyyy");
 
-        Calendar today = Calendar.getInstance();
-        Calendar startDate = Calendar.getInstance();
+        today = Calendar.getInstance();
+        startDate = Calendar.getInstance();
 
         while (startDate.getTime().getDay() + 1 != Calendar.SUNDAY) {
             startDate.add(Calendar.DAY_OF_WEEK, -1);
         }
+        endDate = Calendar.getInstance();
+        while (endDate.getTime().getDay() + 1 != Calendar.SUNDAY) {
+            endDate.add(Calendar.DAY_OF_WEEK, -1);
+        }
+        endDate.add(Calendar.DAY_OF_MONTH, 7);
 
         TitledBorder title;
         String niceDate = dfm.format(startDate.getTime());
@@ -86,8 +148,19 @@ public class ETVFitView extends FrameView {
         getFrame().setIconImage(icon.getImage());
 
 
-        // ETVFitView.setIconImage(Toolkit.getDefaultToolkit().getImage("etv.jpg"));
+        loadData();
 
+        this.childEditingLabel.setVisible(false);
+        //Hide the "New child" stuff
+        jLabel9.setVisible(false);
+        jLabel10.setVisible(false);
+        newChildUsernameTextField.setVisible(false);
+        newChildPasswordTextField.setVisible(false);
+        jButton5.setVisible(false);
+        jButton4.setVisible(false);
+
+        // ETVFitView.setIconImage(Toolkit.getDefaultToolkit().getImage("etv.jpg"));
+        // <editor-fold defaultstate="collapsed" desc="Busy Icons, etc">
         // status bar initialization - message timeout, idle icon and busy animation, etc
 
 
@@ -146,6 +219,7 @@ public class ETVFitView extends FrameView {
                 }
             }
         });
+    //</editor-fold>
     }
 
     @Action
@@ -160,23 +234,76 @@ public class ETVFitView extends FrameView {
 
     private void loadData() {
 
-          //TODO: Do it to the rest of the fields
+
+        // <editor-fold defaultstate="collapsed" desc="Populate MyInfo from User">
         this.myNameTextField.setText(user.getName());
         this.myAgeTextField.setText(String.valueOf(user.getAge()));
-        this.myPhoneTextField.setText(user.getPhone());
-        this.allergiesTextArea.setText(user.getAllergies());
+
         if (user.getSex() == User.MALE) {
             maleRadioButton.setSelected(true);
+        } else {
+            femaleRadioButton.setSelected(true);
         }
+        this.myAddress1TextField.setText(user.getAddress());
+        this.myCityTextField.setText(user.getCity());
+        this.myStateTextField.setText(user.getState());
+        this.myZipTextField.setText(String.valueOf(user.getZip()));
+        this.myPhoneTextField.setText(user.getPhone());
+        this.myInsuranceTextField.setText(user.getInsurance());
+        this.myInsuranceNumberTextField.setText(Long.toString(user.getInsuranceNumber()));
+
+        this.medicalHistoryTextArea.setText(user.getMedicalHistory());
+        this.allergiesTextArea.setText(user.getAllergies());
+        // </editor-fold>
+        // <editor-fold defaultstate="collapsed" desc="Populate Doctor from User.Doctor">
+
+        this.primaryNameTextField.setText(user.getPrimaryPhysician().getName());
+        this.primaryAddressTextField.setText(user.getPrimaryPhysician().getAddress());
+        this.primaryCityTextField.setText(user.getPrimaryPhysician().getCity());
+        this.primaryStateTextField.setText(user.getPrimaryPhysician().getState());
+        this.primaryZipTextField.setText(Integer.toString(user.getPrimaryPhysician().getZip()));
+        this.primaryPhoneTextField.setText(user.getPrimaryPhysician().getPhone());
+        // </editor-fold>
+
+        //Get number of specialists
+        //Update the spinner
+        SpinnerNumberModel model = new SpinnerNumberModel(1, 1, user.getSpecialists().size(), 1);
+        this.specialistSpinner.setModel(model);
+
+        //load in the selected one
+        loadInSelectedSpecialist(Integer.parseInt(this.specialistSpinner.getValue().toString()) - 1);
+        //monitor the spinner for changes
+
+
+        populateMedications();
+        populateAppointments();
+        try {
+            childrenList.setEnabled(true);
+            childrenList.setListData(((Parent) user).children);
+        } catch (ClassCastException e) {
+            //they're not a parent...get rid of that list
+            childrenList.setEnabled(false);
+        }
+
+
+
+
+
+
+
     }
 
-    @Action
-    public void showAppointmentBox() {
-        JFrame mainFrame = ETVFitApp.getApplication().getMainFrame();
-        ETVFitAppointmentBox appointmentBox = new ETVFitAppointmentBox(mainFrame);
-        appointmentBox.setLocationRelativeTo(mainFrame);
-
-        ETVFitApp.getApplication().show(appointmentBox);
+    private void loadInSelectedSpecialist(
+            int selected) {
+        //load in the selected one
+        Doctor specialistOn = user.getSpecialists().get(selected);
+        this.specialistNameTextField.setText(specialistOn.getName());
+        this.specialistAddressTextField.setText(specialistOn.getAddress());
+        this.specialistCityTextField.setText(specialistOn.getCity());
+        this.specialistStateTextField.setText(specialistOn.getState());
+        this.specialistZipTextField.setText(Integer.toString(specialistOn.getZip()));
+        this.specialistPhoneTextField.setText(specialistOn.getPhone());
+        this.specialtyTextField.setText(specialistOn.getSpeciality());
     }
 
     /** This method is called from within the constructor to
@@ -202,6 +329,7 @@ public class ETVFitView extends FrameView {
         remindersPanel = new javax.swing.JPanel();
         remindersScrollPane = new javax.swing.JScrollPane();
         remindersList = new javax.swing.JList();
+        editAppointmentButton = new javax.swing.JButton();
         myInfoTabPanel = new javax.swing.JPanel();
         myInfoSeparator = new javax.swing.JSeparator();
         personalInfoPanel = new javax.swing.JPanel();
@@ -210,24 +338,24 @@ public class ETVFitView extends FrameView {
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         jLabel31 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         myNameTextField = new javax.swing.JTextField();
         myAgeTextField = new javax.swing.JTextField();
         maleRadioButton = new javax.swing.JRadioButton();
         femaleRadioButton = new javax.swing.JRadioButton();
         myAddress1TextField = new javax.swing.JTextField();
-        myAddress2TextField = new javax.swing.JTextField();
-        myPhoneTextField = new javax.swing.JTextField();
-        myInsuranceTextField = new javax.swing.JTextField();
-        editMyInfoButton = new javax.swing.JButton();
-        saveMyChangesButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        myInsuranceNumberTextField = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        myCityTextField = new javax.swing.JTextField();
         myStateTextField = new javax.swing.JTextField();
         myZipTextField = new javax.swing.JTextField();
+        myPhoneTextField = new javax.swing.JTextField();
+        myInsuranceTextField = new javax.swing.JTextField();
+        myInsuranceNumberTextField = new javax.swing.JTextField();
+        editMyInfoButton = new javax.swing.JButton();
+        saveMyChangesButton = new javax.swing.JButton();
         moreInfoPanel = new javax.swing.JSplitPane();
         medicalHistoryPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -242,6 +370,7 @@ public class ETVFitView extends FrameView {
         currentMedicationsList = new javax.swing.JList();
         addNewMedicationButton = new javax.swing.JButton();
         stopMedicationButton = new javax.swing.JButton();
+        editMedicationButton = new javax.swing.JButton();
         pastMedicationsPanel = new javax.swing.JPanel();
         pastMedicationsScrollPane = new javax.swing.JScrollPane();
         pastMedicationsList = new javax.swing.JList();
@@ -250,48 +379,54 @@ public class ETVFitView extends FrameView {
         primaryPanel = new javax.swing.JPanel();
         primaryNameLabel = new javax.swing.JLabel();
         primaryNameTextField = new javax.swing.JTextField();
+        jLabel32 = new javax.swing.JLabel();
+        primaryAddressTextField = new javax.swing.JTextField();
+        jLabel33 = new javax.swing.JLabel();
+        primaryCityTextField = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        primaryStateTextField = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        primaryZipTextField = new javax.swing.JTextField();
+        jLabel25 = new javax.swing.JLabel();
         primaryPhoneTextField = new javax.swing.JTextField();
         primaryButtonsPanel = new javax.swing.JPanel();
         editPrimaryButton = new javax.swing.JButton();
         savePrimaryButton = new javax.swing.JButton();
-        jLabel32 = new javax.swing.JLabel();
-        myAddress1TextField1 = new javax.swing.JTextField();
-        jLabel33 = new javax.swing.JLabel();
-        myAddress2TextField1 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jLabel25 = new javax.swing.JLabel();
         specialistPanel = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
-        jLabelName1 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
         specialistSpinner = new javax.swing.JSpinner();
-        specialistNameTextField = new javax.swing.JTextField();
-        specialistAddress1TextField = new javax.swing.JTextField();
-        specialistPhoneTextField = new javax.swing.JTextField();
-        specialtyTextField = new javax.swing.JTextField();
         addNewSpecialistButton = new javax.swing.JButton();
+        jLabelName1 = new javax.swing.JLabel();
+        specialistNameTextField = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        specialistAddressTextField = new javax.swing.JTextField();
+        jLabel34 = new javax.swing.JLabel();
+        specialistCityTextField = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        specialistStateTextField = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        specialistZipTextField = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
+        specialistPhoneTextField = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        specialtyTextField = new javax.swing.JTextField();
         specialistButtonsPanel = new javax.swing.JPanel();
         editSpecialistButton = new javax.swing.JButton();
         saveSpecialistButton = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel34 = new javax.swing.JLabel();
-        myAddress2TextField2 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        childrenList = new javax.swing.JList();
         jLabel8 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        newChildUsernameTextField = new javax.swing.JTextField();
+        newChildPasswordTextField = new javax.swing.JTextField();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
         childEditingLabel = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
@@ -334,7 +469,7 @@ public class ETVFitView extends FrameView {
 
         scheduleTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"No items", "No items", "Appointment with Dr Stacey", "No items", "No items", "No items", "No items"},
+                {"No items", "No items", "No Items", "No items", "No items", "No items", "No items"},
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -353,9 +488,10 @@ public class ETVFitView extends FrameView {
                 return canEdit [columnIndex];
             }
         });
+        scheduleTable.setColumnSelectionAllowed(true);
         scheduleTable.setFillsViewportHeight(true);
         scheduleTable.setName("scheduleTable"); // NOI18N
-        scheduleTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        scheduleTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         scheduleTable.setShowHorizontalLines(false);
         scheduleTable.getTableHeader().setReorderingAllowed(false);
         scheduleScrollPane.setViewportView(scheduleTable);
@@ -368,17 +504,19 @@ public class ETVFitView extends FrameView {
         scheduleTable.getColumnModel().getColumn(6).setResizable(false);
         scheduleTable.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("scheduleTable.columnModel.title6")); // NOI18N
 
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(etvfit.ETVFitApp.class).getContext().getActionMap(ETVFitView.class, this);
+        previousWeekButton.setAction(actionMap.get("previousWeek")); // NOI18N
         previousWeekButton.setIcon(resourceMap.getIcon("previousWeekButton.icon")); // NOI18N
         previousWeekButton.setText(resourceMap.getString("previousWeekButton.text")); // NOI18N
         previousWeekButton.setName("previousWeekButton"); // NOI18N
 
+        nextWeekButton.setAction(actionMap.get("nextWeek")); // NOI18N
         nextWeekButton.setIcon(resourceMap.getIcon("nextWeekButton.icon")); // NOI18N
         nextWeekButton.setText(resourceMap.getString("nextWeekButton.text")); // NOI18N
         nextWeekButton.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
         nextWeekButton.setName("nextWeekButton"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(etvfit.ETVFitApp.class).getContext().getActionMap(ETVFitView.class, this);
-        addAppointmentButton.setAction(actionMap.get("showAppointmentBox")); // NOI18N
+        addAppointmentButton.setAction(actionMap.get("newAppointment")); // NOI18N
         addAppointmentButton.setIcon(resourceMap.getIcon("addAppointmentButton.icon")); // NOI18N
         addAppointmentButton.setText(resourceMap.getString("addAppointmentButton.text")); // NOI18N
         addAppointmentButton.setName("addAppointmentButton"); // NOI18N
@@ -410,6 +548,12 @@ public class ETVFitView extends FrameView {
             .addComponent(remindersScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
+        editAppointmentButton.setAction(actionMap.get("editAppointment")); // NOI18N
+        editAppointmentButton.setIcon(resourceMap.getIcon("editAppointmentButton.icon")); // NOI18N
+        editAppointmentButton.setText(resourceMap.getString("editAppointmentButton.text")); // NOI18N
+        editAppointmentButton.setEnabled(false);
+        editAppointmentButton.setName("editAppointmentButton"); // NOI18N
+
         javax.swing.GroupLayout scheduleTabPanelLayout = new javax.swing.GroupLayout(scheduleTabPanel);
         scheduleTabPanel.setLayout(scheduleTabPanelLayout);
         scheduleTabPanelLayout.setHorizontalGroup(
@@ -423,7 +567,9 @@ public class ETVFitView extends FrameView {
                             .addComponent(nextWeekButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(previousWeekButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(addAppointmentButton)
+                        .addGroup(scheduleTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(editAppointmentButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(addAppointmentButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(remindersPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -435,16 +581,17 @@ public class ETVFitView extends FrameView {
                 .addComponent(scheduleScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(scheduleTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(scheduleTabPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(remindersPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(scheduleTabPanelLayout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addGroup(scheduleTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(addAppointmentButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, scheduleTabPanelLayout.createSequentialGroup()
-                                .addComponent(previousWeekButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(nextWeekButton))))
-                    .addGroup(scheduleTabPanelLayout.createSequentialGroup()
+                            .addComponent(previousWeekButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(remindersPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(scheduleTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(nextWeekButton)
+                            .addComponent(editAppointmentButton))))
                 .addGap(129, 129, 129))
         );
 
@@ -475,11 +622,20 @@ public class ETVFitView extends FrameView {
         jLabel29.setText(resourceMap.getString("jLabel29.text")); // NOI18N
         jLabel29.setName("jLabel29"); // NOI18N
 
+        jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
+        jLabel2.setName("jLabel2"); // NOI18N
+
+        jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
+        jLabel3.setName("jLabel3"); // NOI18N
+
         jLabel30.setText(resourceMap.getString("jLabel30.text")); // NOI18N
         jLabel30.setName("jLabel30"); // NOI18N
 
         jLabel31.setText(resourceMap.getString("jLabel31.text")); // NOI18N
         jLabel31.setName("jLabel31"); // NOI18N
+
+        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
+        jLabel1.setName("jLabel1"); // NOI18N
 
         myNameTextField.setText(resourceMap.getString("myNameTextField.text")); // NOI18N
         myNameTextField.setEnabled(false);
@@ -504,9 +660,17 @@ public class ETVFitView extends FrameView {
         myAddress1TextField.setEnabled(false);
         myAddress1TextField.setName("myAddress1TextField"); // NOI18N
 
-        myAddress2TextField.setText(resourceMap.getString("myAddress2TextField.text")); // NOI18N
-        myAddress2TextField.setEnabled(false);
-        myAddress2TextField.setName("myAddress2TextField"); // NOI18N
+        myCityTextField.setText(resourceMap.getString("myCityTextField.text")); // NOI18N
+        myCityTextField.setEnabled(false);
+        myCityTextField.setName("myCityTextField"); // NOI18N
+
+        myStateTextField.setText(resourceMap.getString("myStateTextField.text")); // NOI18N
+        myStateTextField.setEnabled(false);
+        myStateTextField.setName("myStateTextField"); // NOI18N
+
+        myZipTextField.setText(resourceMap.getString("myZipTextField.text")); // NOI18N
+        myZipTextField.setEnabled(false);
+        myZipTextField.setName("myZipTextField"); // NOI18N
 
         myPhoneTextField.setText(resourceMap.getString("myPhoneTextField.text")); // NOI18N
         myPhoneTextField.setEnabled(false);
@@ -516,6 +680,10 @@ public class ETVFitView extends FrameView {
         myInsuranceTextField.setEnabled(false);
         myInsuranceTextField.setName("myInsuranceTextField"); // NOI18N
 
+        myInsuranceNumberTextField.setText(resourceMap.getString("myInsuranceNumberTextField.text")); // NOI18N
+        myInsuranceNumberTextField.setEnabled(false);
+        myInsuranceNumberTextField.setName("myInsuranceNumberTextField"); // NOI18N
+
         editMyInfoButton.setAction(actionMap.get("EditMyInfo")); // NOI18N
         editMyInfoButton.setIcon(resourceMap.getIcon("editMyInfoButton.icon")); // NOI18N
         editMyInfoButton.setText(resourceMap.getString("editMyInfoButton.text")); // NOI18N
@@ -524,28 +692,8 @@ public class ETVFitView extends FrameView {
         saveMyChangesButton.setAction(actionMap.get("SaveMyInfo")); // NOI18N
         saveMyChangesButton.setIcon(resourceMap.getIcon("saveMyChangesButton.icon")); // NOI18N
         saveMyChangesButton.setText(resourceMap.getString("saveMyChangesButton.text")); // NOI18N
+        saveMyChangesButton.setEnabled(false);
         saveMyChangesButton.setName("saveMyChangesButton"); // NOI18N
-
-        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
-        jLabel1.setName("jLabel1"); // NOI18N
-
-        myInsuranceNumberTextField.setText(resourceMap.getString("myInsuranceNumberTextField.text")); // NOI18N
-        myInsuranceNumberTextField.setEnabled(false);
-        myInsuranceNumberTextField.setName("myInsuranceNumberTextField"); // NOI18N
-
-        jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
-        jLabel2.setName("jLabel2"); // NOI18N
-
-        jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
-        jLabel3.setName("jLabel3"); // NOI18N
-
-        myStateTextField.setText(resourceMap.getString("myStateTextField.text")); // NOI18N
-        myStateTextField.setEnabled(false);
-        myStateTextField.setName("myStateTextField"); // NOI18N
-
-        myZipTextField.setText(resourceMap.getString("myZipTextField.text")); // NOI18N
-        myZipTextField.setEnabled(false);
-        myZipTextField.setName("myZipTextField"); // NOI18N
 
         javax.swing.GroupLayout personalInfoPanelLayout = new javax.swing.GroupLayout(personalInfoPanel);
         personalInfoPanel.setLayout(personalInfoPanelLayout);
@@ -591,7 +739,7 @@ public class ETVFitView extends FrameView {
                                     .addComponent(maleRadioButton)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(femaleRadioButton))
-                                .addComponent(myAddress2TextField)
+                                .addComponent(myCityTextField)
                                 .addComponent(myAddress1TextField)
                                 .addComponent(myNameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
                                 .addComponent(myAgeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -627,7 +775,7 @@ public class ETVFitView extends FrameView {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(personalInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel29)
-                            .addComponent(myAddress2TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(myCityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(personalInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -738,17 +886,35 @@ public class ETVFitView extends FrameView {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        currentMedicationsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         currentMedicationsList.setName("PastMedsList"); // NOI18N
+        currentMedicationsList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                currentMedicationsListValueChanged(evt);
+            }
+        });
         currentMedicationsScrollPane.setViewportView(currentMedicationsList);
 
-        addNewMedicationButton.setAction(actionMap.get("showMedBox")); // NOI18N
+        addNewMedicationButton.setAction(actionMap.get("newMedication")); // NOI18N
         addNewMedicationButton.setIcon(resourceMap.getIcon("addNewMedicationButton.icon")); // NOI18N
         addNewMedicationButton.setText(resourceMap.getString("addNewMedicationButton.text")); // NOI18N
         addNewMedicationButton.setName("addNewMedicationButton"); // NOI18N
 
         stopMedicationButton.setIcon(resourceMap.getIcon("stopMedicationButton.icon")); // NOI18N
         stopMedicationButton.setText(resourceMap.getString("stopMedicationButton.text")); // NOI18N
+        stopMedicationButton.setEnabled(false);
         stopMedicationButton.setName("stopMedicationButton"); // NOI18N
+        stopMedicationButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopMedicationButtonActionPerformed(evt);
+            }
+        });
+
+        editMedicationButton.setAction(actionMap.get("editMedication")); // NOI18N
+        editMedicationButton.setIcon(resourceMap.getIcon("editMedicationButton.icon")); // NOI18N
+        editMedicationButton.setText(resourceMap.getString("editMedicationButton.text")); // NOI18N
+        editMedicationButton.setEnabled(false);
+        editMedicationButton.setName("editMedicationButton"); // NOI18N
 
         javax.swing.GroupLayout currentMedicationsPanelLayout = new javax.swing.GroupLayout(currentMedicationsPanel);
         currentMedicationsPanel.setLayout(currentMedicationsPanelLayout);
@@ -757,27 +923,30 @@ public class ETVFitView extends FrameView {
             .addGroup(currentMedicationsPanelLayout.createSequentialGroup()
                 .addGroup(currentMedicationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(currentMedicationsPanelLayout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addGroup(currentMedicationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(currentMedicationsPanelLayout.createSequentialGroup()
-                                .addGap(19, 19, 19)
-                                .addComponent(addNewMedicationButton))
-                            .addComponent(stopMedicationButton)))
+                        .addContainerGap()
+                        .addComponent(currentMedicationsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE))
                     .addGroup(currentMedicationsPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(currentMedicationsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)))
+                        .addComponent(addNewMedicationButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(editMedicationButton, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE))
+                    .addGroup(currentMedicationsPanelLayout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addComponent(stopMedicationButton)))
                 .addContainerGap())
         );
         currentMedicationsPanelLayout.setVerticalGroup(
             currentMedicationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, currentMedicationsPanelLayout.createSequentialGroup()
+            .addGroup(currentMedicationsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(currentMedicationsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                .addComponent(addNewMedicationButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(currentMedicationsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(editMedicationButton)
+                    .addComponent(addNewMedicationButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(stopMedicationButton)
-                .addContainerGap())
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         medicationsTabPanel.add(currentMedicationsPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 290, 260));
@@ -792,6 +961,7 @@ public class ETVFitView extends FrameView {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        pastMedicationsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         pastMedicationsList.setName("CurrentMedsList"); // NOI18N
         pastMedicationsScrollPane.setViewportView(pastMedicationsList);
 
@@ -833,6 +1003,37 @@ public class ETVFitView extends FrameView {
         primaryNameTextField.setEnabled(false);
         primaryNameTextField.setName("primaryNameTextField"); // NOI18N
 
+        jLabel32.setText(resourceMap.getString("jLabel32.text")); // NOI18N
+        jLabel32.setName("jLabel32"); // NOI18N
+
+        primaryAddressTextField.setText(resourceMap.getString("primaryAddressTextField.text")); // NOI18N
+        primaryAddressTextField.setEnabled(false);
+        primaryAddressTextField.setName("primaryAddressTextField"); // NOI18N
+
+        jLabel33.setText(resourceMap.getString("jLabel33.text")); // NOI18N
+        jLabel33.setName("jLabel33"); // NOI18N
+
+        primaryCityTextField.setText(resourceMap.getString("primaryCityTextField.text")); // NOI18N
+        primaryCityTextField.setEnabled(false);
+        primaryCityTextField.setName("primaryCityTextField"); // NOI18N
+
+        jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
+        jLabel4.setName("jLabel4"); // NOI18N
+
+        primaryStateTextField.setText(resourceMap.getString("primaryStateTextField.text")); // NOI18N
+        primaryStateTextField.setEnabled(false);
+        primaryStateTextField.setName("primaryStateTextField"); // NOI18N
+
+        jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
+        jLabel5.setName("jLabel5"); // NOI18N
+
+        primaryZipTextField.setText(resourceMap.getString("primaryZipTextField.text")); // NOI18N
+        primaryZipTextField.setEnabled(false);
+        primaryZipTextField.setName("primaryZipTextField"); // NOI18N
+
+        jLabel25.setText(resourceMap.getString("jLabel25.text")); // NOI18N
+        jLabel25.setName("jLabel25"); // NOI18N
+
         primaryPhoneTextField.setText(resourceMap.getString("primaryPhoneTextField.text")); // NOI18N
         primaryPhoneTextField.setEnabled(false);
         primaryPhoneTextField.setName("primaryPhoneTextField"); // NOI18N
@@ -847,6 +1048,7 @@ public class ETVFitView extends FrameView {
         savePrimaryButton.setAction(actionMap.get("savePrimaryInfo")); // NOI18N
         savePrimaryButton.setIcon(resourceMap.getIcon("savePrimaryButton.icon")); // NOI18N
         savePrimaryButton.setText(resourceMap.getString("savePrimaryButton.text")); // NOI18N
+        savePrimaryButton.setEnabled(false);
         savePrimaryButton.setName("savePrimaryButton"); // NOI18N
 
         javax.swing.GroupLayout primaryButtonsPanelLayout = new javax.swing.GroupLayout(primaryButtonsPanel);
@@ -870,37 +1072,6 @@ public class ETVFitView extends FrameView {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel32.setText(resourceMap.getString("jLabel32.text")); // NOI18N
-        jLabel32.setName("jLabel32"); // NOI18N
-
-        myAddress1TextField1.setText(resourceMap.getString("myAddress1TextField1.text")); // NOI18N
-        myAddress1TextField1.setEnabled(false);
-        myAddress1TextField1.setName("myAddress1TextField1"); // NOI18N
-
-        jLabel33.setText(resourceMap.getString("jLabel33.text")); // NOI18N
-        jLabel33.setName("jLabel33"); // NOI18N
-
-        myAddress2TextField1.setText(resourceMap.getString("myAddress2TextField1.text")); // NOI18N
-        myAddress2TextField1.setEnabled(false);
-        myAddress2TextField1.setName("myAddress2TextField1"); // NOI18N
-
-        jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
-        jLabel4.setName("jLabel4"); // NOI18N
-
-        jTextField4.setText(resourceMap.getString("jTextField4.text")); // NOI18N
-        jTextField4.setEnabled(false);
-        jTextField4.setName("jTextField4"); // NOI18N
-
-        jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
-        jLabel5.setName("jLabel5"); // NOI18N
-
-        jTextField5.setText(resourceMap.getString("jTextField5.text")); // NOI18N
-        jTextField5.setEnabled(false);
-        jTextField5.setName("jTextField5"); // NOI18N
-
-        jLabel25.setText(resourceMap.getString("jLabel25.text")); // NOI18N
-        jLabel25.setName("jLabel25"); // NOI18N
-
         javax.swing.GroupLayout primaryPanelLayout = new javax.swing.GroupLayout(primaryPanel);
         primaryPanel.setLayout(primaryPanelLayout);
         primaryPanelLayout.setHorizontalGroup(
@@ -916,14 +1087,16 @@ public class ETVFitView extends FrameView {
                             .addComponent(jLabel33)
                             .addComponent(jLabel5)
                             .addComponent(jLabel25))
-                        .addGap(40, 40, 40)
+                        .addGap(10, 10, 10)
                         .addGroup(primaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(primaryPhoneTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(myAddress1TextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                            .addComponent(primaryNameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                            .addComponent(myAddress2TextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)))
+                            .addComponent(primaryZipTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(primaryStateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(primaryAddressTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                            .addComponent(primaryCityTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                            .addComponent(primaryNameTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, primaryPanelLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(primaryPhoneTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE))))
                     .addGroup(primaryPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(primaryButtonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -939,19 +1112,19 @@ public class ETVFitView extends FrameView {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(primaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel32)
-                    .addComponent(myAddress1TextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(primaryAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(primaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(myAddress2TextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(primaryCityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel33))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(primaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(primaryStateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(primaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(primaryZipTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(primaryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel25)
@@ -967,37 +1140,68 @@ public class ETVFitView extends FrameView {
         jLabel17.setText(resourceMap.getString("jLabel17.text")); // NOI18N
         jLabel17.setName("jLabel17"); // NOI18N
 
-        jLabelName1.setText(resourceMap.getString("jLabelName1.text")); // NOI18N
-        jLabelName1.setName("jLabelName1"); // NOI18N
-
-        jLabel18.setText(resourceMap.getString("jLabel18.text")); // NOI18N
-        jLabel18.setName("jLabel18"); // NOI18N
-
-        jLabel19.setText(resourceMap.getString("jLabel19.text")); // NOI18N
-        jLabel19.setName("jLabel19"); // NOI18N
-
+        specialistSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), null, null, Integer.valueOf(1)));
         specialistSpinner.setEditor(new javax.swing.JSpinner.NumberEditor(specialistSpinner, ""));
         specialistSpinner.setName("specialistSpinner"); // NOI18N
+        specialistSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                specialistSpinnerStateChanged(evt);
+            }
+        });
+
+        addNewSpecialistButton.setAction(actionMap.get("addSpecialist")); // NOI18N
+        addNewSpecialistButton.setIcon(resourceMap.getIcon("addNewSpecialistButton.icon")); // NOI18N
+        addNewSpecialistButton.setText(resourceMap.getString("addNewSpecialistButton.text")); // NOI18N
+        addNewSpecialistButton.setName("addNewSpecialistButton"); // NOI18N
+
+        jLabelName1.setText(resourceMap.getString("jLabelName1.text")); // NOI18N
+        jLabelName1.setName("jLabelName1"); // NOI18N
 
         specialistNameTextField.setText(resourceMap.getString("specialistNameTextField.text")); // NOI18N
         specialistNameTextField.setEnabled(false);
         specialistNameTextField.setName("specialistNameTextField"); // NOI18N
 
-        specialistAddress1TextField.setText(resourceMap.getString("specialistAddress1TextField.text")); // NOI18N
-        specialistAddress1TextField.setEnabled(false);
-        specialistAddress1TextField.setName("specialistAddress1TextField"); // NOI18N
+        jLabel18.setText(resourceMap.getString("jLabel18.text")); // NOI18N
+        jLabel18.setName("jLabel18"); // NOI18N
+
+        specialistAddressTextField.setText(resourceMap.getString("specialistAddressTextField.text")); // NOI18N
+        specialistAddressTextField.setEnabled(false);
+        specialistAddressTextField.setName("specialistAddressTextField"); // NOI18N
+
+        jLabel34.setText(resourceMap.getString("jLabel34.text")); // NOI18N
+        jLabel34.setName("jLabel34"); // NOI18N
+
+        specialistCityTextField.setText(resourceMap.getString("specialistCityTextField.text")); // NOI18N
+        specialistCityTextField.setEnabled(false);
+        specialistCityTextField.setName("specialistCityTextField"); // NOI18N
+
+        jLabel7.setText(resourceMap.getString("jLabel7.text")); // NOI18N
+        jLabel7.setName("jLabel7"); // NOI18N
+
+        specialistStateTextField.setText(resourceMap.getString("specialistStateTextField.text")); // NOI18N
+        specialistStateTextField.setEnabled(false);
+        specialistStateTextField.setName("specialistStateTextField"); // NOI18N
+
+        jLabel6.setText(resourceMap.getString("jLabel6.text")); // NOI18N
+        jLabel6.setName("jLabel6"); // NOI18N
+
+        specialistZipTextField.setText(resourceMap.getString("specialistZipTextField.text")); // NOI18N
+        specialistZipTextField.setEnabled(false);
+        specialistZipTextField.setName("specialistZipTextField"); // NOI18N
+
+        jLabel19.setText(resourceMap.getString("jLabel19.text")); // NOI18N
+        jLabel19.setName("jLabel19"); // NOI18N
 
         specialistPhoneTextField.setText(resourceMap.getString("specialistPhoneTextField.text")); // NOI18N
         specialistPhoneTextField.setEnabled(false);
         specialistPhoneTextField.setName("specialistPhoneTextField"); // NOI18N
 
+        jLabel12.setText(resourceMap.getString("jLabel12.text")); // NOI18N
+        jLabel12.setName("jLabel12"); // NOI18N
+
         specialtyTextField.setText(resourceMap.getString("specialtyTextField.text")); // NOI18N
         specialtyTextField.setEnabled(false);
         specialtyTextField.setName("specialtyTextField"); // NOI18N
-
-        addNewSpecialistButton.setIcon(resourceMap.getIcon("addNewSpecialistButton.icon")); // NOI18N
-        addNewSpecialistButton.setText(resourceMap.getString("addNewSpecialistButton.text")); // NOI18N
-        addNewSpecialistButton.setName("addNewSpecialistButton"); // NOI18N
 
         specialistButtonsPanel.setName("specialistButtonsPanel"); // NOI18N
 
@@ -1009,53 +1213,39 @@ public class ETVFitView extends FrameView {
         saveSpecialistButton.setAction(actionMap.get("SaveSpecialistInfo")); // NOI18N
         saveSpecialistButton.setIcon(resourceMap.getIcon("saveSpecialistButton.icon")); // NOI18N
         saveSpecialistButton.setText(resourceMap.getString("saveSpecialistButton.text")); // NOI18N
+        saveSpecialistButton.setEnabled(false);
         saveSpecialistButton.setName("saveSpecialistButton"); // NOI18N
+
+        jButton1.setAction(actionMap.get("removeSpecialist")); // NOI18N
+        jButton1.setIcon(resourceMap.getIcon("jButton1.icon")); // NOI18N
+        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
+        jButton1.setName("jButton1"); // NOI18N
 
         javax.swing.GroupLayout specialistButtonsPanelLayout = new javax.swing.GroupLayout(specialistButtonsPanel);
         specialistButtonsPanel.setLayout(specialistButtonsPanelLayout);
         specialistButtonsPanelLayout.setHorizontalGroup(
             specialistButtonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(specialistButtonsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(editSpecialistButton)
-                .addGap(18, 18, 18)
-                .addComponent(saveSpecialistButton)
+                .addGroup(specialistButtonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(specialistButtonsPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(editSpecialistButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(saveSpecialistButton))
+                    .addGroup(specialistButtonsPanelLayout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addComponent(jButton1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         specialistButtonsPanelLayout.setVerticalGroup(
             specialistButtonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(specialistButtonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(editSpecialistButton)
-                .addComponent(saveSpecialistButton))
+            .addGroup(specialistButtonsPanelLayout.createSequentialGroup()
+                .addGroup(specialistButtonsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(editSpecialistButton)
+                    .addComponent(saveSpecialistButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1))
         );
-
-        jLabel6.setText(resourceMap.getString("jLabel6.text")); // NOI18N
-        jLabel6.setName("jLabel6"); // NOI18N
-
-        jTextField6.setText(resourceMap.getString("jTextField6.text")); // NOI18N
-        jTextField6.setEnabled(false);
-        jTextField6.setName("jTextField6"); // NOI18N
-
-        jLabel7.setText(resourceMap.getString("jLabel7.text")); // NOI18N
-        jLabel7.setName("jLabel7"); // NOI18N
-
-        jLabel34.setText(resourceMap.getString("jLabel34.text")); // NOI18N
-        jLabel34.setName("jLabel34"); // NOI18N
-
-        myAddress2TextField2.setText(resourceMap.getString("myAddress2TextField2.text")); // NOI18N
-        myAddress2TextField2.setEnabled(false);
-        myAddress2TextField2.setName("myAddress2TextField2"); // NOI18N
-
-        jTextField7.setText(resourceMap.getString("jTextField7.text")); // NOI18N
-        jTextField7.setEnabled(false);
-        jTextField7.setName("jTextField7"); // NOI18N
-
-        jLabel12.setText(resourceMap.getString("jLabel12.text")); // NOI18N
-        jLabel12.setName("jLabel12"); // NOI18N
-
-        jButton1.setIcon(resourceMap.getIcon("jButton1.icon")); // NOI18N
-        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
-        jButton1.setName("jButton1"); // NOI18N
 
         javax.swing.GroupLayout specialistPanelLayout = new javax.swing.GroupLayout(specialistPanel);
         specialistPanel.setLayout(specialistPanelLayout);
@@ -1078,12 +1268,12 @@ public class ETVFitView extends FrameView {
                                     .addComponent(jLabel18)
                                     .addComponent(jLabelName1))
                                 .addGap(35, 35, 35)
-                                .addGroup(specialistPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(specialistAddress1TextField)
-                                    .addComponent(myAddress2TextField2)
-                                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(specialistNameTextField)))))
+                                .addGroup(specialistPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(specialistStateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(specialistCityTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+                                    .addComponent(specialistZipTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(specialistAddressTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+                                    .addComponent(specialistNameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)))))
                     .addGroup(specialistPanelLayout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(specialistPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1096,13 +1286,9 @@ public class ETVFitView extends FrameView {
                                     .addComponent(jLabel12))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(specialistPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(specialistPhoneTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-                                    .addComponent(specialtyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(125, 125, 125))
-                            .addComponent(specialistButtonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(specialistPanelLayout.createSequentialGroup()
-                        .addGap(75, 75, 75)
-                        .addComponent(jButton1)))
+                                    .addComponent(specialistPhoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(specialtyTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)))
+                            .addComponent(specialistButtonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         specialistPanelLayout.setVerticalGroup(
@@ -1120,19 +1306,19 @@ public class ETVFitView extends FrameView {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(specialistPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18)
-                    .addComponent(specialistAddress1TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(specialistAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(specialistPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel34)
-                    .addComponent(myAddress2TextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(specialistCityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(specialistPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(specialistStateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(specialistPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(specialistZipTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(specialistPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
@@ -1142,10 +1328,8 @@ public class ETVFitView extends FrameView {
                     .addComponent(jLabel12)
                     .addComponent(specialtyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(specialistButtonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(specialistButtonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         doctorTabPanel.add(specialistPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 10, 280, 290));
@@ -1156,13 +1340,18 @@ public class ETVFitView extends FrameView {
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
+        childrenList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jList1.setName("jList1"); // NOI18N
-        jScrollPane1.setViewportView(jList1);
+        childrenList.setName("childrenList"); // NOI18N
+        childrenList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                childrenListValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(childrenList);
 
         jLabel8.setText(resourceMap.getString("jLabel8.text")); // NOI18N
         jLabel8.setName("jLabel8"); // NOI18N
@@ -1172,13 +1361,38 @@ public class ETVFitView extends FrameView {
         jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
         jButton2.setName("jButton2"); // NOI18N
 
+        jButton3.setAction(actionMap.get("editChild")); // NOI18N
         jButton3.setIcon(resourceMap.getIcon("jButton3.icon")); // NOI18N
         jButton3.setText(resourceMap.getString("jButton3.text")); // NOI18N
+        jButton3.setEnabled(false);
         jButton3.setName("jButton3"); // NOI18N
 
+        jButton4.setAction(actionMap.get("returnToParentMode")); // NOI18N
         jButton4.setIcon(resourceMap.getIcon("jButton4.icon")); // NOI18N
         jButton4.setText(resourceMap.getString("jButton4.text")); // NOI18N
         jButton4.setName("jButton4"); // NOI18N
+
+        jLabel9.setText(resourceMap.getString("jLabel9.text")); // NOI18N
+        jLabel9.setName("jLabel9"); // NOI18N
+
+        jLabel10.setText(resourceMap.getString("jLabel10.text")); // NOI18N
+        jLabel10.setName("jLabel10"); // NOI18N
+
+        newChildUsernameTextField.setText(resourceMap.getString("newChildUsernameTextField.text")); // NOI18N
+        newChildUsernameTextField.setName("newChildUsernameTextField"); // NOI18N
+
+        newChildPasswordTextField.setText(resourceMap.getString("newChildPasswordTextField.text")); // NOI18N
+        newChildPasswordTextField.setName("newChildPasswordTextField"); // NOI18N
+
+        jButton5.setAction(actionMap.get("addThisChild")); // NOI18N
+        jButton5.setText(resourceMap.getString("jButton5.text")); // NOI18N
+        jButton5.setName("jButton5"); // NOI18N
+
+        jButton6.setAction(actionMap.get("removeChild")); // NOI18N
+        jButton6.setIcon(resourceMap.getIcon("jButton6.icon")); // NOI18N
+        jButton6.setText(resourceMap.getString("jButton6.text")); // NOI18N
+        jButton6.setEnabled(false);
+        jButton6.setName("jButton6"); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -1189,18 +1403,30 @@ public class ETVFitView extends FrameView {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(69, 69, 69)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(34, 34, 34)
-                                .addComponent(jButton4))))
+                                .addGap(10, 10, 10)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(newChildPasswordTextField)
+                                    .addComponent(newChildUsernameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE))))
+                        .addGap(69, 69, 69)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)))
                     .addComponent(jLabel8))
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addGap(79, 79, 79))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(89, 89, 89)
+                .addComponent(jButton5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
+                .addComponent(jButton4)
+                .addGap(68, 68, 68))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1210,15 +1436,27 @@ public class ETVFitView extends FrameView {
                         .addContainerGap()
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(newChildUsernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10)
+                            .addComponent(newChildPasswordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(42, 42, 42)
                         .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton4)))
-                .addContainerGap(148, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton6)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton5)
+                    .addComponent(jButton4))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         actionsTabbedPane.addTab(resourceMap.getString("jPanel1.TabConstraints.tabTitle"), resourceMap.getIcon("jPanel1.TabConstraints.tabIcon"), jPanel1); // NOI18N
@@ -1263,8 +1501,6 @@ public class ETVFitView extends FrameView {
                 .addComponent(actionsTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(24, Short.MAX_VALUE))
         );
-
-        this.childEditingLabel.setVisible(false);
 
         menuBar.setName("menuBar"); // NOI18N
 
@@ -1367,6 +1603,116 @@ public class ETVFitView extends FrameView {
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void currentMedicationsListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_currentMedicationsListValueChanged
+        if (!currentMedicationsList.isSelectionEmpty()) {
+            editMedicationButton.setEnabled(true);
+            this.stopMedicationButton.setEnabled(true);
+        } else {
+            editMedicationButton.setEnabled(false);
+            this.stopMedicationButton.setEnabled(false);
+        }
+    }//GEN-LAST:event_currentMedicationsListValueChanged
+
+    private void populateAppointments() {
+        scheduleTable.setModel(new DefaultTableModel(new Object[][]{
+                    {"No items", "No items", "No Items", "No items", "No items", "No items", "No items"},
+                    {null, null, null, null, null, null, null},
+                    {null, null, null, null, null, null, null},
+                    {null, null, null, null, null, null, null},
+                    {null, null, null, null, null, null, null},
+                    {null, null, null, null, null, null, null}
+                },
+                new String[]{
+                    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+                }));
+        //Populate scheduleTable from appointments for this week
+        //loop through all of our appointments
+        for (Appointment a : user.appointments) {
+            //See if it falls within this week
+            if (startDate.getTime().before(a.getDate())) {
+                if (endDate.getTime().after(a.getDate())) {
+                    //put it in the correct place in the table
+                    int index = a.getDate().getDay();
+                    int i = 0;
+                    while (true) {
+                        try {
+                            Object o = scheduleTable.getValueAt(i, index);
+                            if (o == null || o.toString().equals("No items")) {
+                                //Put it there
+                                scheduleTable.setValueAt(a, i, index);
+                                break;
+                            } else {
+                                i++;
+                            }
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            //There must have been too many things in the table.
+                            //Add a row
+                            ((DefaultTableModel) scheduleTable.getModel()).addRow(new Vector());
+                        //Keep our loop working
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+    @Action
+    public void previousWeek() {
+        endDate.add(Calendar.DAY_OF_MONTH, -7);
+        startDate.add(Calendar.DAY_OF_MONTH, -7);
+
+        DateFormat dfm = new SimpleDateFormat("MMMM dd, yyyy");
+        String niceDate = dfm.format(startDate.getTime());
+        TitledBorder title = BorderFactory.createTitledBorder("The week of: " + niceDate);
+        scheduleScrollPane.setBorder(title);
+        populateAppointments();
+    }
+
+    @Action
+    public void nextWeek() {
+        endDate.add(Calendar.DAY_OF_MONTH, 7);
+        startDate.add(Calendar.DAY_OF_MONTH, 7);
+
+        DateFormat dfm = new SimpleDateFormat("MMMM dd, yyyy");
+        String niceDate = dfm.format(startDate.getTime());
+        TitledBorder title = BorderFactory.createTitledBorder("The week of: " + niceDate);
+        scheduleScrollPane.setBorder(title);
+        populateAppointments();
+    }
+
+    private void populateMedications() {
+        currentMedicationsList.setListData(user.medications);
+        this.pastMedicationsList.setListData(user.getPriorMedications());
+    }
+
+    private void stopMedicationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopMedicationButtonActionPerformed
+        user.stopTaking(user.medications.get(currentMedicationsList.getSelectedIndex()));
+        //update the lists
+        populateMedications();
+    }//GEN-LAST:event_stopMedicationButtonActionPerformed
+
+    private void specialistSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_specialistSpinnerStateChanged
+        //Check to see if it's within range
+        if (Integer.parseInt(specialistSpinner.getValue().toString()) > 0 &&
+                Integer.parseInt(specialistSpinner.getValue().toString()) <= user.getSpecialists().size()) {
+            loadInSelectedSpecialist(Integer.parseInt(specialistSpinner.getValue().toString()) - 1);
+        } else {
+            specialistSpinner.setValue(1);
+        }
+    }//GEN-LAST:event_specialistSpinnerStateChanged
+
+    private void childrenListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_childrenListValueChanged
+
+        if (!childrenList.isSelectionEmpty()) {
+            jButton3.setEnabled(true);
+            jButton6.setEnabled(true);
+        } else {
+            jButton3.setEnabled(false);
+            this.jButton6.setEnabled(false);
+        }
+    }//GEN-LAST:event_childrenListValueChanged
+
     @Action
     public void EditMyInfo() {
         for (Component o : this.personalInfoPanel.getComponents()) {
@@ -1382,21 +1728,6 @@ public class ETVFitView extends FrameView {
     }
 
     @Action
-    public void ClearMyInfo() {
-        int response;
-
-        response = javax.swing.JOptionPane.showConfirmDialog(null, "Clear all fields?");
-        if (response == javax.swing.JOptionPane.OK_OPTION) {
-            for (Component o : this.personalInfoPanel.getComponents()) {
-                if (o.getClass().isInstance(new javax.swing.JTextField())) {
-                    ((javax.swing.JTextField) o).setText("");
-                }
-                o.setEnabled(true);
-            }
-        }
-    }
-
-    @Action
     public void SaveMyInfo() {
         for (Component o : this.personalInfoPanel.getComponents()) {
             if (!o.getClass().isInstance(new JLabel())) {
@@ -1406,52 +1737,67 @@ public class ETVFitView extends FrameView {
         this.allergiesTextArea.setEditable(false);
         this.allergiesTextArea.setEnabled(false);
         this.medicalHistoryTextArea.setEnabled(false);
-         this.medicalHistoryTextArea.setEditable(false);
+        this.medicalHistoryTextArea.setEditable(false);
         this.editMyInfoButton.setEnabled(true);
         this.saveMyChangesButton.setEnabled(false);
 
 
-        //TODO: Do it to the rest of the fields
-
         ///add everything back into the User
+        // <editor-fold defaultstate="collapsed" desc="Populate User from MyInfo">
+
         user.setName(this.myNameTextField.getText());
         user.setAge(Integer.parseInt(this.myAgeTextField.getText()));
-        user.setPhone(this.myPhoneTextField.getText());
-        user.setAllergies(this.allergiesTextArea.getText());
 
         if (maleRadioButton.isSelected() == true) {
             user.setSex(User.MALE);
+        } else {
+            user.setSex(User.FEMALE);
         }
+        user.setAddress(this.myAddress1TextField.getText());
+        user.setCity(this.myCityTextField.getText());
+        user.setState(this.myStateTextField.getText());
+        user.setZip(Integer.parseInt(this.myZipTextField.getText()));
+        user.setPhone(this.myPhoneTextField.getText());
+        user.setInsurance(this.myInsuranceTextField.getText());
+        user.setInsuranceNumber(Long.parseLong(this.myInsuranceNumberTextField.getText()));
+
+        user.setMedicalHistory(this.medicalHistoryTextArea.getText());
+        user.setAllergies(this.allergiesTextArea.getText());
+    // </editor-fold>
+
+
     }
 
     @Action
     public void quitAction() {
+        //OK, Let's dis-allow Children (who are not Parents)
+        try {
+            //Some bogus statement to test for Parent or not
+            Parent p = ((Parent) user);
+            //if that statement executed, then prompt for saving, etc.
+            // Perform any other operations you might need
+            // before exit.
+            int n = JOptionPane.showConfirmDialog(
+                    new java.awt.Frame(),
+                    "Would you like to save before you exit?",
+                    "Save Result of Session?",
+                    JOptionPane.YES_NO_OPTION);
 
+            if (n == JOptionPane.YES_OPTION) {
+                this.app.SaveInfo(user);
+            }
 
-
-        // Perform any other operations you might need
-        // before exit.
-        int n = JOptionPane.showConfirmDialog(
-                new java.awt.Frame(),
-                "Would you like to save before you exit?",
-                "Save Result of Session?",
-                JOptionPane.YES_NO_OPTION);
-
-        if (n == JOptionPane.YES_OPTION) {
-            this.app.SaveInfo(user);
+        } catch (ClassCastException c) {
+            //If it's just a Child (User) then say so
+            JOptionPane.showMessageDialog(new java.awt.Frame(),
+                    "The results of this session will not be saved because you are a Child." +
+                    "\nIn order to save your session results, please have your Parent log on \n" +
+                    "and reenter your information through \"Child-Editing Mode.\"",
+                    "Child Mode", JOptionPane.ERROR_MESSAGE);
         }
 
         this.getFrame().dispose();
         System.exit(0);
-    }
-
-    @Action
-    public void showMedBox() {
-        JFrame mainFrame = ETVFitApp.getApplication().getMainFrame();
-        ETVFitMedicationsBox medicationBox = new ETVFitMedicationsBox(mainFrame);
-        medicationBox.setLocationRelativeTo(mainFrame);
-
-        ETVFitApp.getApplication().show(medicationBox);
     }
 
     @Action
@@ -1474,6 +1820,15 @@ public class ETVFitView extends FrameView {
         }
         this.savePrimaryButton.setEnabled(false);
         this.editPrimaryButton.setEnabled(true);
+
+        // <editor-fold defaultstate="collapsed" desc="Populate User.Doctor from Doctor">
+        user.getPrimaryPhysician().setName(this.primaryNameTextField.getText());
+        user.getPrimaryPhysician().setAddress(this.primaryAddressTextField.getText());
+        user.getPrimaryPhysician().setCity(this.primaryCityTextField.getText());
+        user.getPrimaryPhysician().setState(this.primaryStateTextField.getText());
+        user.getPrimaryPhysician().setZip(Integer.parseInt(this.primaryZipTextField.getText()));
+        user.getPrimaryPhysician().setPhone(this.primaryPhoneTextField.getText());
+    // </editor-fold>
     }
 
     @Action
@@ -1496,21 +1851,38 @@ public class ETVFitView extends FrameView {
         }
         this.saveSpecialistButton.setEnabled(false);
         this.editSpecialistButton.setEnabled(true);
+
+        // <editor-fold defaultstate="collapsed" desc="Populate User.Specialist from Specialist">
+        int selected = Integer.parseInt(this.specialistSpinner.getValue().toString()) - 1;
+        Doctor specialistOn = user.getSpecialists().get(selected);
+        specialistOn.setName(this.specialistNameTextField.getText());
+        specialistOn.setAddress(this.specialistAddressTextField.getText());
+        specialistOn.setCity(this.specialistCityTextField.getText());
+        specialistOn.setState(this.specialistStateTextField.getText());
+        specialistOn.setZip(Integer.parseInt(this.specialistZipTextField.getText()));
+        specialistOn.setPhone(this.specialistPhoneTextField.getText());
+        specialistOn.setSpeciality(this.specialtyTextField.getText());
+    // </editor-fold>
+    }
+
+    @Action
+    public void addSpecialist() {
+        this.user.getSpecialists().add(new Doctor());
+        loadInSelectedSpecialist(this.user.getSpecialists().size() - 1);
+        SpinnerNumberModel model = new SpinnerNumberModel(1, 1, user.getSpecialists().size(), 1);
+        this.specialistSpinner.setModel(model);
+        this.specialistSpinner.setValue(user.getSpecialists().size());
     }
 
     @Action
     public void AddChild() {
-        JFrame mainFrame = ETVFitApp.getApplication().getMainFrame();
-        Login login = new Login(mainFrame, true, app.dataHolder.users);
-        login.setLocationRelativeTo(mainFrame);
-        login.setText("Please enter your new child's login username and password.");
-        ETVFitApp.getApplication().show(login);
-        if (login.getReturnStatus() == (Login.RET_OK)) {
-            this.childEditingLabel.setVisible(true);
-        } else {
-            this.childEditingLabel.setVisible(false);
-        }
 
+        //Show the "New child" stuff
+        jLabel9.setVisible(true);
+        jLabel10.setVisible(true);
+        newChildUsernameTextField.setVisible(true);
+        newChildPasswordTextField.setVisible(true);
+        jButton5.setVisible(true);
     }
 
     @Action
@@ -1542,8 +1914,160 @@ public class ETVFitView extends FrameView {
 
     @Action
     public void saveAll() {
-                    this.app.SaveInfo(user);
+        this.app.SaveInfo(user);
 
+    }
+
+    @Action
+    public void newMedication() {
+        if (!user.getPrimaryPhysician().getName().equals("")) {
+
+            Vector<Doctor> myDocs = new Vector<Doctor>();
+            myDocs.add(user.getPrimaryPhysician());
+            myDocs.addAll(user.getSpecialists());
+
+            Medication newMed = new Medication();
+            JFrame mainFrame = ETVFitApp.getApplication().getMainFrame();
+
+            ETVFitMedicationsBox medicationBox = new ETVFitMedicationsBox(mainFrame, true, newMed, myDocs);
+            medicationBox.setLocationRelativeTo(mainFrame);
+
+            ETVFitApp.getApplication().show(medicationBox);
+            if (medicationBox.getReturnStatus() == ETVFitMedicationsBox.RET_OK) {
+                this.user.medications.add(newMed);
+                populateMedications();
+            }//Otherwise, don't add it
+        } else {
+            JOptionPane.showMessageDialog(new java.awt.Frame(),
+                    "You must have a Primary Care Physician to add Medications",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    @Action
+    public void editMedication() {
+        //Find the selected med
+        Medication selectedMed = user.medications.get(currentMedicationsList.getSelectedIndex());
+        JFrame mainFrame = ETVFitApp.getApplication().getMainFrame();
+
+        Vector<Doctor> myDocs = new Vector<Doctor>();
+        myDocs.add(user.getPrimaryPhysician());
+        myDocs.addAll(user.getSpecialists());
+
+        ETVFitMedicationsBox medicationBox = new ETVFitMedicationsBox(mainFrame, true, selectedMed, myDocs);
+        medicationBox.setLocationRelativeTo(mainFrame);
+
+        ETVFitApp.getApplication().show(medicationBox);
+        if (medicationBox.getReturnStatus() == ETVFitMedicationsBox.RET_OK) {
+            populateMedications();
+        } //Otherwise, don't do anything
+    }
+
+    @Action
+    public void removeSpecialist() {
+        if (this.user.getSpecialists().size() > 1) {
+            int removeIndex = Integer.parseInt(specialistSpinner.getValue().toString());
+            this.user.getSpecialists().remove(removeIndex - 1);
+            System.out.println(this.user.getSpecialists().size());
+            this.specialistSpinner.setValue(user.getSpecialists().size());
+            loadInSelectedSpecialist(this.user.getSpecialists().size() - 1);
+        } else {
+            JOptionPane.showMessageDialog(new java.awt.Frame(),
+                    "You must have at lease one Specialist",
+                    "Invalid Remove Operation", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+
+    @Action
+    public void editChild() {
+
+        JOptionPane.showMessageDialog(new java.awt.Frame(),
+                "Now entering Child-Editing Mode, where you can change the information of your child.  \n" +
+                "Your information fields will be replaced by those of your selected child.\n" +
+                "To return to your information, press the \"Return to Parent Mode\" button.",
+                "Child-Editing Mode", JOptionPane.INFORMATION_MESSAGE);
+        prevUser = user;
+        user = ((Parent) user).children.get(childrenList.getSelectedIndex());
+        // user=login.getUser();
+        loadData();
+        jButton4.setVisible(true);
+        jButton6.setVisible(false);
+        jButton2.setVisible(false);
+        jButton3.setVisible(false);
+        this.childEditingLabel.setVisible(true);
+    }
+
+    @Action
+    public void addThisChild() {
+        ((Parent) user).addNewChild(new User(this.newChildUsernameTextField.getText(),
+                this.newChildPasswordTextField.getText()));
+        //Hide the "New child" stuff
+        jLabel9.setVisible(false);
+        jLabel10.setVisible(false);
+        newChildUsernameTextField.setVisible(false);
+        newChildPasswordTextField.setVisible(false);
+        jButton5.setVisible(false);
+        childrenList.setListData(((Parent) user).children);
+    }
+
+    @Action
+    public void returnToParentMode() {
+        user = prevUser;
+        prevUser = null;
+        loadData();
+    }
+
+    @Action
+    public void removeChild() {
+        ((Parent) user).children.remove(((Parent) user).children.get(childrenList.getSelectedIndex()));
+        childrenList.setListData(((Parent) user).children);
+    }
+
+    @Action
+    public void newAppointment() {
+        if (!user.getPrimaryPhysician().getName().equals("")) {
+
+            Vector<Doctor> myDocs = new Vector<Doctor>();
+            myDocs.add(user.getPrimaryPhysician());
+            myDocs.addAll(user.getSpecialists());
+
+            Appointment newAppt = new Appointment();
+            JFrame mainFrame = ETVFitApp.getApplication().getMainFrame();
+
+            ETVFitAppointmentBox appointmentBox = new ETVFitAppointmentBox(mainFrame, true, newAppt, myDocs);
+            appointmentBox.setLocationRelativeTo(mainFrame);
+
+            ETVFitApp.getApplication().show(appointmentBox);
+            if (appointmentBox.getReturnStatus() == ETVFitAppointmentBox.RET_OK) {
+
+                this.user.appointments.add(newAppt);
+                populateAppointments();
+            }//Otherwise, don't add it
+        } else {
+            JOptionPane.showMessageDialog(new java.awt.Frame(),
+                    "You must have a Primary Care Physician to add Appointments",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    @Action
+    public void editAppointment() {
+
+        Vector<Doctor> myDocs = new Vector<Doctor>();
+        myDocs.add(user.getPrimaryPhysician());
+        myDocs.addAll(user.getSpecialists());
+
+        Appointment editAppt = (Appointment) scheduleTable.getValueAt(scheduleTable.getSelectedRow(), scheduleTable.getSelectedColumn());
+        JFrame mainFrame = ETVFitApp.getApplication().getMainFrame();
+
+        ETVFitAppointmentBox appointmentBox = new ETVFitAppointmentBox(mainFrame, true, editAppt, myDocs);
+        appointmentBox.setLocationRelativeTo(mainFrame);
+
+        ETVFitApp.getApplication().show(appointmentBox);
+        if (appointmentBox.getReturnStatus() == ETVFitAppointmentBox.RET_OK) {
+            populateAppointments();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1555,11 +2079,14 @@ public class ETVFitView extends FrameView {
     private javax.swing.JScrollPane allergiesScrollPane;
     private javax.swing.JTextArea allergiesTextArea;
     private javax.swing.JLabel childEditingLabel;
+    private javax.swing.JList childrenList;
     private javax.swing.JList currentMedicationsList;
     private javax.swing.JPanel currentMedicationsPanel;
     private javax.swing.JScrollPane currentMedicationsScrollPane;
     private javax.swing.JSeparator doctorSeparator;
     private javax.swing.JPanel doctorTabPanel;
+    private javax.swing.JButton editAppointmentButton;
+    private javax.swing.JButton editMedicationButton;
     private javax.swing.JButton editMyInfoButton;
     private javax.swing.JButton editPrimaryButton;
     private javax.swing.JButton editSpecialistButton;
@@ -1569,7 +2096,10 @@ public class ETVFitView extends FrameView {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel17;
@@ -1592,8 +2122,8 @@ public class ETVFitView extends FrameView {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelName1;
-    private javax.swing.JList jList1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
@@ -1603,10 +2133,6 @@ public class ETVFitView extends FrameView {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JRadioButton maleRadioButton;
     private javax.swing.JPanel medicalHistoryPanel;
@@ -1616,11 +2142,8 @@ public class ETVFitView extends FrameView {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JSplitPane moreInfoPanel;
     private javax.swing.JTextField myAddress1TextField;
-    private javax.swing.JTextField myAddress1TextField1;
-    private javax.swing.JTextField myAddress2TextField;
-    private javax.swing.JTextField myAddress2TextField1;
-    private javax.swing.JTextField myAddress2TextField2;
     private javax.swing.JTextField myAgeTextField;
+    private javax.swing.JTextField myCityTextField;
     private javax.swing.JSeparator myInfoSeparator;
     private javax.swing.JPanel myInfoTabPanel;
     private javax.swing.JTextField myInsuranceNumberTextField;
@@ -1629,17 +2152,23 @@ public class ETVFitView extends FrameView {
     private javax.swing.JTextField myPhoneTextField;
     private javax.swing.JTextField myStateTextField;
     private javax.swing.JTextField myZipTextField;
+    private javax.swing.JTextField newChildPasswordTextField;
+    private javax.swing.JTextField newChildUsernameTextField;
     private javax.swing.JButton nextWeekButton;
     private javax.swing.JList pastMedicationsList;
     private javax.swing.JPanel pastMedicationsPanel;
     private javax.swing.JScrollPane pastMedicationsScrollPane;
     private javax.swing.JPanel personalInfoPanel;
     private javax.swing.JButton previousWeekButton;
+    private javax.swing.JTextField primaryAddressTextField;
     private javax.swing.JPanel primaryButtonsPanel;
+    private javax.swing.JTextField primaryCityTextField;
     private javax.swing.JLabel primaryNameLabel;
     private javax.swing.JTextField primaryNameTextField;
     private javax.swing.JPanel primaryPanel;
     private javax.swing.JTextField primaryPhoneTextField;
+    private javax.swing.JTextField primaryStateTextField;
+    private javax.swing.JTextField primaryZipTextField;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JList remindersList;
     private javax.swing.JPanel remindersPanel;
@@ -1651,12 +2180,15 @@ public class ETVFitView extends FrameView {
     private javax.swing.JScrollPane scheduleScrollPane;
     private javax.swing.JPanel scheduleTabPanel;
     private javax.swing.JTable scheduleTable;
-    private javax.swing.JTextField specialistAddress1TextField;
+    private javax.swing.JTextField specialistAddressTextField;
     private javax.swing.JPanel specialistButtonsPanel;
+    private javax.swing.JTextField specialistCityTextField;
     private javax.swing.JTextField specialistNameTextField;
     private javax.swing.JPanel specialistPanel;
     private javax.swing.JTextField specialistPhoneTextField;
     private javax.swing.JSpinner specialistSpinner;
+    private javax.swing.JTextField specialistStateTextField;
+    private javax.swing.JTextField specialistZipTextField;
     private javax.swing.JTextField specialtyTextField;
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;

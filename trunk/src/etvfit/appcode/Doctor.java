@@ -2,100 +2,151 @@ package etvfit.appcode;
 
 import java.io.*;
 
-public class Doctor implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 107370099662254157L;
-	private String address1;	//address line 1
-	private String address2;	//address line 2
-	private String name;		//uh, duh
-	private String phone;		//phone number
-	private boolean specialist;	//is a specialist?
-	private String speciality;	//speciality if applicable
-	
-	public Doctor(String Name,String Addr1,String Addr2,String Phone){
-		this(Name,Addr1,Addr2,Phone,false,"");
-	}
-	
-	public String toString(){
-		return name;
-	}
-	
-	public Doctor( String Name,
-						String Addr1,
-						String Addr2,
-						String Phone,
-						boolean Specialist,
-						String Speciality
-						){
-		
-		name=Name;
-		address1=Addr1;
-		address2=Addr2;
-		setPhone(Phone);
-		setSpecialist(Specialist);
-		setSpeciality(Speciality);
-		
-	}
+public class Doctor implements Serializable {
 
-	public Doctor() {
-		address1 = "";		//address line 1
-		address2 = "";		//address line 2
-		name = "";			
-		phone = "";			//phone number
-		speciality = "";	//speciality if applicable
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 107370099662254157L;
+    private String address;	//address line 1
+    private String city;
+    private String state;
+    private int zip;
+    private String name;		//uh, duh
+    private String phone;		//phone number
+    private String speciality;	//speciality if applicable
 
-	public String getAddress1() {
-		return address1;
-	}
+    public Doctor(String Name, String Addr1, String city, String state, int zip, String Phone) {
+        this(Name, Addr1, city, state, zip, Phone,  "");
+    }
 
-	public String getAddress2() {
-		return address2;
-	}
+    public String toString() {
+        return name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    @Override
+    public boolean equals(Object other) {
+        Doctor doc;
+        try {
+            doc = (Doctor) other;
 
-	public String getPhone() {
-		return phone;
-	}
+        } catch (ClassCastException e) {
+            return false;
+        }
+        if (doc.getName().equals(this.name) && doc.getPhone().equals(this.phone)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	public String getSpeciality() {
-		return speciality;
-	}
-	
-	public boolean isSpecialist() {
-		return specialist;
-	}
-	
-	public String mailingLabel(){
-		return name+"\n"+address1+"\n"+address2;
-	}
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 37 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 37 * hash + (this.phone != null ? this.phone.hashCode() : 0);
+        return hash;
+    }
 
-	public void setAddress1(String address1) {
-		this.address1 = address1;
-	}
+    public Doctor(String Name,
+            String Addr1,
+            String city,
+            String state,
+            int zip,
+            String Phone,
+            String Speciality) {
 
-	public void setAddress2(String address2) {
-		this.address2 = address2;
-	}
+        name = Name;
+        address = Addr1;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+        setPhone(Phone);
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
 
-	public void setSpecialist(boolean specialist) {
-		this.specialist = specialist;
-	}
+        setSpeciality(Speciality);
+    }
 
-	public void setSpeciality(String speciality) {
-		this.speciality = speciality;
-	}
+    public Doctor() {
+        address = "";		//address line 1
+        this.city = "";
+        this.state = "";
+        name =
+                "";
+        phone =
+                "";			//phone number
+        speciality =
+                "";	//speciality if applicable
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public int getZip() {
+        return zip;
+    }
+
+    public void setZip(int zip) {
+        this.zip = zip;
+    }
+
+    public String getAddress1() {
+        return address;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getSpeciality() {
+        return speciality;
+    }
+
+
+
+    public String mailingLabel() {
+        return name + "\n" + address + "\n" + city + ", " + state + " " + zip;
+    }
+
+    public void setAddress1(String address1) {
+        this.address = address1;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setSpeciality(String speciality) {
+        this.speciality = speciality;
+    }
 }

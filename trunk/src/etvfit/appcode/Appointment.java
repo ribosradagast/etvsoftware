@@ -3,74 +3,81 @@ package etvfit.appcode;
 import java.util.*;
 import java.io.*;
 
-public class Appointment implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6027694335205665932L;
-	private Date date;			//date of appointment
-	private String description;	//description of appointment (reason)
-	private Doctor doctor;		//doctor appointment is with
-	private String results;		//results of appointment ("I have cancer", "I will die in 7 days", ect.)
-	private User user;			//user appointment is with, for clairty
-	
-	public Appointment(Date Date,
-							 Doctor DOctor,
-							 String Description){
-		
-		setDate(Date);
-		setDoctor(DOctor);
-		setDescription(Description);
-		
-	}
-	
-	public String toString(){
-		return description;
-	}
-	
-	public boolean appointmentInDays(int days){
-		//returns true if the appointment is in <= number of days
-		//given as parameter; otherwise false
-		return false;
-	}
+public class Appointment implements Serializable {
 
-	public Date getDate() {
-		return date;
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = -6027694335205665932L;
+    private Date date;			//date of appointment
+    private Doctor doctor;		//doctor appointment is with
+    private String time;        //time of appt
+    private String description;	//description of appointment (reason)
+    private String results;		//results of appointment ("I have cancer", "I will die in 7 days", ect.)
 
-	public String getDescription() {
-		return description;
-	}
+    public Appointment() {
+        date = new Date();
+        doctor = new Doctor();
+        time = "";
+        description = "";
+        results = "";
+    }
 
-	public Doctor getDoctor() {
-		return doctor;
-	}
+    public Appointment(Date date, Doctor doctor, String time, String description, String results) {
+        this.date = date;
+        this.doctor = doctor;
+        this.time = time;
+        this.description = description;
+        this.results = results;
+    }
 
-	public String getResults() {
-		return results;
-	}
+    public String getTime() {
+        return time;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public void setTime(String time) {
+        this.time = time;
+    }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    public String toString() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public boolean appointmentInDays(int days) {
+        //returns true if the appointment is in <= number of days
+        //given as parameter; otherwise false
+        return false;
+    }
 
-	public void setDoctor(Doctor doctor) {
-		this.doctor = doctor;
-	}
+    public Date getDate() {
+        return date;
+    }
 
-	public void setResults(String results) {
-		this.results = results;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public String getResults() {
+        return results;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
+    }
+
+    public void setResults(String results) {
+        this.results = results;
+    }
 }
