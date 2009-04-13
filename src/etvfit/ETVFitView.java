@@ -5,11 +5,9 @@ package etvfit;
 
 import etvfit.appcode.*;
 import java.awt.Component;
-import java.awt.Image;
 import javax.swing.event.ListSelectionEvent;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
-import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
@@ -21,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Vector;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -32,13 +31,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
-import org.jdesktop.application.ApplicationContext;
-import org.jdesktop.application.ResourceManager;
 
 /**
  * The application's main frame.
@@ -77,6 +70,7 @@ public class ETVFitView extends FrameView {
         this.getFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.getFrame().addWindowListener(new WindowAdapter() {
 
+            @Override
             public void windowClosing(WindowEvent e) {
                 quitAction();
             }
@@ -124,11 +118,11 @@ public class ETVFitView extends FrameView {
         today = Calendar.getInstance();
         startDate = Calendar.getInstance();
 
-        while (startDate.getTime().getDay() + 1 != Calendar.SUNDAY) {
+        while (startDate.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
             startDate.add(Calendar.DAY_OF_WEEK, -1);
         }
         endDate = Calendar.getInstance();
-        while (endDate.getTime().getDay() + 1 != Calendar.SUNDAY) {
+        while (endDate.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
             endDate.add(Calendar.DAY_OF_WEEK, -1);
         }
         endDate.add(Calendar.DAY_OF_MONTH, 7);
@@ -222,13 +216,30 @@ public class ETVFitView extends FrameView {
     //</editor-fold>
     }
 
+    public void populateTodaysAppointments() {
+        remindersList.setModel(new DefaultListModel());
+
+        //Populate scheduleTable from appointments for this week
+        //loop through all of our appointments
+        for (Appointment a : user.appointments) {
+            //See if it falls within this week
+            if (a.getDate().get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH) &&
+                    a.getDate().get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+                    a.getDate().get(Calendar.MONTH) == today.get(Calendar.MONTH)) {
+                ((DefaultListModel) remindersList.getModel()).addElement(a);
+            }
+        }
+    }
+
     @Action
     public void showAboutBox() {
         if (aboutBox == null) {
             JFrame mainFrame = ETVFitApp.getApplication().getMainFrame();
-            aboutBox = new ETVFitAboutBox(mainFrame);
+            aboutBox =
+                    new ETVFitAboutBox(mainFrame);
             aboutBox.setLocationRelativeTo(mainFrame);
         }
+
         ETVFitApp.getApplication().show(aboutBox);
     }
 
@@ -244,6 +255,7 @@ public class ETVFitView extends FrameView {
         } else {
             femaleRadioButton.setSelected(true);
         }
+
         this.myAddress1TextField.setText(user.getAddress());
         this.myCityTextField.setText(user.getCity());
         this.myStateTextField.setText(user.getState());
@@ -276,7 +288,9 @@ public class ETVFitView extends FrameView {
 
 
         populateMedications();
+
         populateAppointments();
+
         try {
             childrenList.setEnabled(true);
             childrenList.setListData(((Parent) user).children);
@@ -284,12 +298,6 @@ public class ETVFitView extends FrameView {
             //they're not a parent...get rid of that list
             childrenList.setEnabled(false);
         }
-
-
-
-
-
-
 
     }
 
@@ -526,11 +534,7 @@ public class ETVFitView extends FrameView {
 
         remindersScrollPane.setName("remindersScrollPane"); // NOI18N
 
-        remindersList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Take your meds", "Get out of Bed", "Go to the Doctor" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
+        remindersList.setModel( new DefaultListModel());
         remindersList.setName("remindersList"); // NOI18N
         remindersScrollPane.setViewportView(remindersList);
 
@@ -551,7 +555,6 @@ public class ETVFitView extends FrameView {
         editAppointmentButton.setAction(actionMap.get("editAppointment")); // NOI18N
         editAppointmentButton.setIcon(resourceMap.getIcon("editAppointmentButton.icon")); // NOI18N
         editAppointmentButton.setText(resourceMap.getString("editAppointmentButton.text")); // NOI18N
-        editAppointmentButton.setEnabled(false);
         editAppointmentButton.setName("editAppointmentButton"); // NOI18N
 
         javax.swing.GroupLayout scheduleTabPanelLayout = new javax.swing.GroupLayout(scheduleTabPanel);
@@ -692,7 +695,6 @@ public class ETVFitView extends FrameView {
         saveMyChangesButton.setAction(actionMap.get("SaveMyInfo")); // NOI18N
         saveMyChangesButton.setIcon(resourceMap.getIcon("saveMyChangesButton.icon")); // NOI18N
         saveMyChangesButton.setText(resourceMap.getString("saveMyChangesButton.text")); // NOI18N
-        saveMyChangesButton.setEnabled(false);
         saveMyChangesButton.setName("saveMyChangesButton"); // NOI18N
 
         javax.swing.GroupLayout personalInfoPanelLayout = new javax.swing.GroupLayout(personalInfoPanel);
@@ -913,7 +915,6 @@ public class ETVFitView extends FrameView {
         editMedicationButton.setAction(actionMap.get("editMedication")); // NOI18N
         editMedicationButton.setIcon(resourceMap.getIcon("editMedicationButton.icon")); // NOI18N
         editMedicationButton.setText(resourceMap.getString("editMedicationButton.text")); // NOI18N
-        editMedicationButton.setEnabled(false);
         editMedicationButton.setName("editMedicationButton"); // NOI18N
 
         javax.swing.GroupLayout currentMedicationsPanelLayout = new javax.swing.GroupLayout(currentMedicationsPanel);
@@ -1048,7 +1049,6 @@ public class ETVFitView extends FrameView {
         savePrimaryButton.setAction(actionMap.get("savePrimaryInfo")); // NOI18N
         savePrimaryButton.setIcon(resourceMap.getIcon("savePrimaryButton.icon")); // NOI18N
         savePrimaryButton.setText(resourceMap.getString("savePrimaryButton.text")); // NOI18N
-        savePrimaryButton.setEnabled(false);
         savePrimaryButton.setName("savePrimaryButton"); // NOI18N
 
         javax.swing.GroupLayout primaryButtonsPanelLayout = new javax.swing.GroupLayout(primaryButtonsPanel);
@@ -1213,7 +1213,6 @@ public class ETVFitView extends FrameView {
         saveSpecialistButton.setAction(actionMap.get("SaveSpecialistInfo")); // NOI18N
         saveSpecialistButton.setIcon(resourceMap.getIcon("saveSpecialistButton.icon")); // NOI18N
         saveSpecialistButton.setText(resourceMap.getString("saveSpecialistButton.text")); // NOI18N
-        saveSpecialistButton.setEnabled(false);
         saveSpecialistButton.setName("saveSpecialistButton"); // NOI18N
 
         jButton1.setAction(actionMap.get("removeSpecialist")); // NOI18N
@@ -1364,7 +1363,6 @@ public class ETVFitView extends FrameView {
         jButton3.setAction(actionMap.get("editChild")); // NOI18N
         jButton3.setIcon(resourceMap.getIcon("jButton3.icon")); // NOI18N
         jButton3.setText(resourceMap.getString("jButton3.text")); // NOI18N
-        jButton3.setEnabled(false);
         jButton3.setName("jButton3"); // NOI18N
 
         jButton4.setAction(actionMap.get("returnToParentMode")); // NOI18N
@@ -1391,7 +1389,6 @@ public class ETVFitView extends FrameView {
         jButton6.setAction(actionMap.get("removeChild")); // NOI18N
         jButton6.setIcon(resourceMap.getIcon("jButton6.icon")); // NOI18N
         jButton6.setText(resourceMap.getString("jButton6.text")); // NOI18N
-        jButton6.setEnabled(false);
         jButton6.setName("jButton6"); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -1629,10 +1626,10 @@ public class ETVFitView extends FrameView {
         //loop through all of our appointments
         for (Appointment a : user.appointments) {
             //See if it falls within this week
-            if (startDate.getTime().before(a.getDate())) {
-                if (endDate.getTime().after(a.getDate())) {
+            if (startDate.before(a.getDate())) {
+                if (endDate.after(a.getDate())) {
                     //put it in the correct place in the table
-                    int index = a.getDate().getDay();
+                    int index = a.getDate().get(Calendar.DAY_OF_WEEK) - 1;
                     int i = 0;
                     while (true) {
                         try {
@@ -1641,9 +1638,11 @@ public class ETVFitView extends FrameView {
                                 //Put it there
                                 scheduleTable.setValueAt(a, i, index);
                                 break;
+
                             } else {
                                 i++;
                             }
+
                         } catch (ArrayIndexOutOfBoundsException e) {
                             //There must have been too many things in the table.
                             //Add a row
@@ -1655,6 +1654,7 @@ public class ETVFitView extends FrameView {
                 }
             }
         }
+        populateTodaysAppointments();
     }
 
     @Action
@@ -1667,6 +1667,7 @@ public class ETVFitView extends FrameView {
         TitledBorder title = BorderFactory.createTitledBorder("The week of: " + niceDate);
         scheduleScrollPane.setBorder(title);
         populateAppointments();
+
     }
 
     @Action
@@ -1679,6 +1680,7 @@ public class ETVFitView extends FrameView {
         TitledBorder title = BorderFactory.createTitledBorder("The week of: " + niceDate);
         scheduleScrollPane.setBorder(title);
         populateAppointments();
+
     }
 
     private void populateMedications() {
@@ -1719,6 +1721,7 @@ public class ETVFitView extends FrameView {
             if (!o.getClass().isInstance(new JLabel())) {
                 o.setEnabled(true);
             }
+
         }
         this.allergiesTextArea.setEditable(true);
         this.allergiesTextArea.setEnabled(true);
@@ -1733,6 +1736,7 @@ public class ETVFitView extends FrameView {
             if (!o.getClass().isInstance(new JLabel())) {
                 o.setEnabled(false);
             }
+
         }
         this.allergiesTextArea.setEditable(false);
         this.allergiesTextArea.setEnabled(false);
@@ -1753,6 +1757,7 @@ public class ETVFitView extends FrameView {
         } else {
             user.setSex(User.FEMALE);
         }
+
         user.setAddress(this.myAddress1TextField.getText());
         user.setCity(this.myCityTextField.getText());
         user.setState(this.myStateTextField.getText());
@@ -1806,6 +1811,7 @@ public class ETVFitView extends FrameView {
             if (!o.getClass().isInstance(new JLabel())) {
                 o.setEnabled(true);
             }
+
         }
         this.savePrimaryButton.setEnabled(true);
         this.editPrimaryButton.setEnabled(false);
@@ -1817,6 +1823,7 @@ public class ETVFitView extends FrameView {
             if (!o.getClass().isInstance(new JLabel())) {
                 o.setEnabled(false);
             }
+
         }
         this.savePrimaryButton.setEnabled(false);
         this.editPrimaryButton.setEnabled(true);
@@ -1837,6 +1844,7 @@ public class ETVFitView extends FrameView {
             if (!o.getClass().isInstance(new JLabel())) {
                 o.setEnabled(true);
             }
+
         }
         this.saveSpecialistButton.setEnabled(true);
         this.editSpecialistButton.setEnabled(false);
@@ -1848,6 +1856,7 @@ public class ETVFitView extends FrameView {
             if (o.getClass().isInstance(new JTextField())) {
                 o.setEnabled(false);
             }
+
         }
         this.saveSpecialistButton.setEnabled(false);
         this.editSpecialistButton.setEnabled(true);
@@ -1903,11 +1912,13 @@ public class ETVFitView extends FrameView {
         if (mng.getReturnStatus() == (ETVFitManageUsers.RET_OK)) {
             visibleUsers = mng.users;
         }
-        //Merge visibleUsers and .users vector
+//Merge visibleUsers and .users vector
+
         for (User u : visibleUsers) {
             if (!app.dataHolder.users.contains(u)) {
                 app.dataHolder.users.add(u);
             }
+
         }
         mng.dispose();
     }
@@ -1936,12 +1947,16 @@ public class ETVFitView extends FrameView {
             if (medicationBox.getReturnStatus() == ETVFitMedicationsBox.RET_OK) {
                 this.user.medications.add(newMed);
                 populateMedications();
+
             }//Otherwise, don't add it
+
+
         } else {
             JOptionPane.showMessageDialog(new java.awt.Frame(),
                     "You must have a Primary Care Physician to add Medications",
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
+
     }
 
     @Action
@@ -1961,6 +1976,7 @@ public class ETVFitView extends FrameView {
         if (medicationBox.getReturnStatus() == ETVFitMedicationsBox.RET_OK) {
             populateMedications();
         } //Otherwise, don't do anything
+
     }
 
     @Action
@@ -1987,10 +2003,13 @@ public class ETVFitView extends FrameView {
                 "Your information fields will be replaced by those of your selected child.\n" +
                 "To return to your information, press the \"Return to Parent Mode\" button.",
                 "Child-Editing Mode", JOptionPane.INFORMATION_MESSAGE);
-        prevUser = user;
-        user = ((Parent) user).children.get(childrenList.getSelectedIndex());
+        prevUser =
+                user;
+        user =
+                ((Parent) user).children.get(childrenList.getSelectedIndex());
         // user=login.getUser();
         loadData();
+
         jButton4.setVisible(true);
         jButton6.setVisible(false);
         jButton2.setVisible(false);
@@ -2014,8 +2033,10 @@ public class ETVFitView extends FrameView {
     @Action
     public void returnToParentMode() {
         user = prevUser;
-        prevUser = null;
+        prevUser =
+                null;
         loadData();
+
     }
 
     @Action
@@ -2043,12 +2064,16 @@ public class ETVFitView extends FrameView {
 
                 this.user.appointments.add(newAppt);
                 populateAppointments();
+
             }//Otherwise, don't add it
+
+
         } else {
             JOptionPane.showMessageDialog(new java.awt.Frame(),
                     "You must have a Primary Care Physician to add Appointments",
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
+
     }
 
     @Action
@@ -2068,6 +2093,7 @@ public class ETVFitView extends FrameView {
         if (appointmentBox.getReturnStatus() == ETVFitAppointmentBox.RET_OK) {
             populateAppointments();
         }
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
