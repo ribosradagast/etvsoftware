@@ -93,11 +93,6 @@ public class Login extends javax.swing.JDialog {
 
         passPasswordField.setText(resourceMap.getString("passPasswordField.text")); // NOI18N
         passPasswordField.setName("passPasswordField"); // NOI18N
-        passPasswordField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passPasswordFieldActionPerformed(evt);
-            }
-        });
 
         userNameTextField.setText(resourceMap.getString("userNameTextField.text")); // NOI18N
         userNameTextField.setName("userNameTextField"); // NOI18N
@@ -182,10 +177,6 @@ public class Login extends javax.swing.JDialog {
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
-
-    private void passPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passPasswordFieldActionPerformed
-        // TODO add your handling code here:
-}//GEN-LAST:event_passPasswordFieldActionPerformed
 
     private void doClose(int retStatus) {
         returnStatus = retStatus;

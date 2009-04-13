@@ -112,7 +112,6 @@ public class ETVFitManageUsers extends javax.swing.JDialog {
         userTextField.setText(resourceMap.getString("userTextField.text")); // NOI18N
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(etvfit.ETVFitApp.class).getContext().getActionMap(ETVFitManageUsers.class, this);
         userTextField.setAction(actionMap.get("boxEdited")); // NOI18N
-        userTextField.setEnabled(false);
         userTextField.setName("userTextField"); // NOI18N
         userTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -122,7 +121,6 @@ public class ETVFitManageUsers extends javax.swing.JDialog {
 
         passTextField.setText(resourceMap.getString("passTextField.text")); // NOI18N
         passTextField.setAction(actionMap.get("boxEdited")); // NOI18N
-        passTextField.setEnabled(false);
         passTextField.setName("passTextField"); // NOI18N
         passTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -245,8 +243,7 @@ public class ETVFitManageUsers extends javax.swing.JDialog {
     }//GEN-LAST:event_listValueChanged
 
     private void keyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyTyped
-        // TODO add your handling code here:
-
+    
         addMeButton.setVisible(true);
 
     }//GEN-LAST:event_keyTyped
@@ -265,12 +262,15 @@ public class ETVFitManageUsers extends javax.swing.JDialog {
 
             public void run() {
                 Vector v = new Vector<User>();
-                v.add(new User("address1", "address2", 100,
-                        "insurance", true, "Name1",
-                        "password", "phone", "username", "allergies", true));
-                v.add(new User("address1", "address2", 100,
-                        "insurance", true, "Name2",
-                        "password", "phone", "username", "allergies", true));
+                v.add(new User("username", "password","Name1",1,
+                        "address", "city", "state", 2, "phone",
+                        "insurance",3, "medicalHistory",
+                        "allergies")) ;
+
+                  v.add(new User("username", "password","Name2",1,
+                        "address", "city", "state", 2, "phone",
+                        "insurance",3, "medicalHistory",
+                        "allergies")) ;
                 ETVFitManageUsers dialog = new ETVFitManageUsers(new javax.swing.JFrame(), true, v);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 

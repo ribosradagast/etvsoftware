@@ -105,7 +105,10 @@
                                       <Component id="previousWeekButton" alignment="0" min="-2" max="-2" attributes="1"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="addAppointmentButton" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="editAppointmentButton" max="32767" attributes="1"/>
+                                      <Component id="addAppointmentButton" alignment="0" max="32767" attributes="1"/>
+                                  </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="remindersPanel" max="32767" attributes="0"/>
                               </Group>
@@ -120,20 +123,21 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="scheduleScrollPane" min="-2" pref="164" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="addAppointmentButton" alignment="0" max="32767" attributes="1"/>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="previousWeekButton" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="nextWeekButton" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                              </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="remindersPanel" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="addAppointmentButton" alignment="0" max="32767" attributes="1"/>
+                                      <Component id="previousWeekButton" alignment="0" max="32767" attributes="1"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="nextWeekButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="editAppointmentButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
                           <EmptySpace min="-2" pref="129" max="-2" attributes="0"/>
@@ -180,7 +184,7 @@
                               <Data value="null"/>
                             </Column>
                             <Column editable="false" title="Tuesday" type="java.lang.Object">
-                              <Data value="Appointment with Dr Stacey"/>
+                              <Data value="No Items"/>
                               <Data value="null"/>
                               <Data value="null"/>
                               <Data value="null"/>
@@ -260,10 +264,11 @@
                             </Column>
                           </TableColumnModel>
                         </Property>
+                        <Property name="columnSelectionAllowed" type="boolean" value="true"/>
                         <Property name="fillsViewportHeight" type="boolean" value="true"/>
                         <Property name="name" type="java.lang.String" value="scheduleTable" noResource="true"/>
                         <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
-                          <JTableSelectionModel selectionMode="1"/>
+                          <JTableSelectionModel selectionMode="0"/>
                         </Property>
                         <Property name="showHorizontalLines" type="boolean" value="false"/>
                         <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
@@ -275,6 +280,9 @@
                 </Container>
                 <Component class="javax.swing.JButton" name="previousWeekButton">
                   <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="etvfit.ETVFitView" id="previousWeek" methodName="previousWeek"/>
+                    </Property>
                     <Property name="icon" type="javax.swing.Icon" resourceKey="previousWeekButton.icon"/>
                     <Property name="text" type="java.lang.String" resourceKey="previousWeekButton.text"/>
                     <Property name="name" type="java.lang.String" value="previousWeekButton" noResource="true"/>
@@ -282,6 +290,9 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="nextWeekButton">
                   <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="etvfit.ETVFitView" id="nextWeek" methodName="nextWeek"/>
+                    </Property>
                     <Property name="icon" type="javax.swing.Icon" resourceKey="nextWeekButton.icon"/>
                     <Property name="text" type="java.lang.String" resourceKey="nextWeekButton.text"/>
                     <Property name="horizontalTextPosition" type="int" value="10"/>
@@ -291,7 +302,7 @@
                 <Component class="javax.swing.JButton" name="addAppointmentButton">
                   <Properties>
                     <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                      <action class="etvfit.ETVFitView" id="showAppointmentBox" methodName="showAppointmentBox"/>
+                      <action class="etvfit.ETVFitView" id="newAppointment" methodName="newAppointment"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" resourceKey="addAppointmentButton.icon"/>
                     <Property name="text" type="java.lang.String" resourceKey="addAppointmentButton.text"/>
@@ -353,6 +364,17 @@
                     </Container>
                   </SubComponents>
                 </Container>
+                <Component class="javax.swing.JButton" name="editAppointmentButton">
+                  <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="etvfit.ETVFitView" id="editAppointment" methodName="editAppointment"/>
+                    </Property>
+                    <Property name="icon" type="javax.swing.Icon" resourceKey="editAppointmentButton.icon"/>
+                    <Property name="text" type="java.lang.String" resourceKey="editAppointmentButton.text"/>
+                    <Property name="enabled" type="boolean" value="false"/>
+                    <Property name="name" type="java.lang.String" value="editAppointmentButton" noResource="true"/>
+                  </Properties>
+                </Component>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="myInfoTabPanel">
@@ -448,7 +470,7 @@
                                                   <EmptySpace max="-2" attributes="0"/>
                                                   <Component id="femaleRadioButton" min="-2" max="-2" attributes="0"/>
                                               </Group>
-                                              <Component id="myAddress2TextField" alignment="0" max="32767" attributes="1"/>
+                                              <Component id="myCityTextField" alignment="0" max="32767" attributes="1"/>
                                               <Component id="myAddress1TextField" alignment="0" max="32767" attributes="1"/>
                                               <Component id="myNameTextField" alignment="0" pref="162" max="32767" attributes="1"/>
                                               <Component id="myAgeTextField" alignment="0" min="-2" pref="35" max="-2" attributes="1"/>
@@ -495,7 +517,7 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="3" attributes="0">
                                           <Component id="jLabel29" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="myAddress2TextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="myCityTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="3" attributes="0">
@@ -566,6 +588,18 @@
                         <Property name="name" type="java.lang.String" value="jLabel29" noResource="true"/>
                       </Properties>
                     </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel2">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="jLabel2.text"/>
+                        <Property name="name" type="java.lang.String" value="jLabel2" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel3">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="jLabel3.text"/>
+                        <Property name="name" type="java.lang.String" value="jLabel3" noResource="true"/>
+                      </Properties>
+                    </Component>
                     <Component class="javax.swing.JLabel" name="jLabel30">
                       <Properties>
                         <Property name="text" type="java.lang.String" resourceKey="jLabel30.text"/>
@@ -576,6 +610,12 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" resourceKey="jLabel31.text"/>
                         <Property name="name" type="java.lang.String" value="jLabel31" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel1">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="jLabel1.text"/>
+                        <Property name="name" type="java.lang.String" value="jLabel1" noResource="true"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="myNameTextField">
@@ -620,11 +660,25 @@
                         <Property name="name" type="java.lang.String" value="myAddress1TextField" noResource="true"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="myAddress2TextField">
+                    <Component class="javax.swing.JTextField" name="myCityTextField">
                       <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="myAddress2TextField.text"/>
+                        <Property name="text" type="java.lang.String" resourceKey="myCityTextField.text"/>
                         <Property name="enabled" type="boolean" value="false"/>
-                        <Property name="name" type="java.lang.String" value="myAddress2TextField" noResource="true"/>
+                        <Property name="name" type="java.lang.String" value="myCityTextField" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="myStateTextField">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="myStateTextField.text"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="name" type="java.lang.String" value="myStateTextField" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="myZipTextField">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="myZipTextField.text"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="name" type="java.lang.String" value="myZipTextField" noResource="true"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="myPhoneTextField">
@@ -639,6 +693,13 @@
                         <Property name="text" type="java.lang.String" resourceKey="myInsuranceTextField.text"/>
                         <Property name="enabled" type="boolean" value="false"/>
                         <Property name="name" type="java.lang.String" value="myInsuranceTextField" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="myInsuranceNumberTextField">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="myInsuranceNumberTextField.text"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="name" type="java.lang.String" value="myInsuranceNumberTextField" noResource="true"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JButton" name="editMyInfoButton">
@@ -658,46 +719,8 @@
                         </Property>
                         <Property name="icon" type="javax.swing.Icon" resourceKey="saveMyChangesButton.icon"/>
                         <Property name="text" type="java.lang.String" resourceKey="saveMyChangesButton.text"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="name" type="java.lang.String" value="saveMyChangesButton" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel1">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel1.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel1" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="myInsuranceNumberTextField">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="myInsuranceNumberTextField.text"/>
-                        <Property name="enabled" type="boolean" value="false"/>
-                        <Property name="name" type="java.lang.String" value="myInsuranceNumberTextField" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel2">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel2.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel2" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel3">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel3.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel3" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="myStateTextField">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="myStateTextField.text"/>
-                        <Property name="enabled" type="boolean" value="false"/>
-                        <Property name="name" type="java.lang.String" value="myStateTextField" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="myZipTextField">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="myZipTextField.text"/>
-                        <Property name="enabled" type="boolean" value="false"/>
-                        <Property name="name" type="java.lang.String" value="myZipTextField" noResource="true"/>
                       </Properties>
                     </Component>
                   </SubComponents>
@@ -890,19 +913,19 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
-                                              <Component id="addNewMedicationButton" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Component id="stopMedicationButton" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="currentMedicationsScrollPane" pref="258" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="addNewMedicationButton" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="editMedicationButton" pref="127" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
+                                      <Component id="stopMedicationButton" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -911,14 +934,17 @@
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="currentMedicationsScrollPane" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="25" max="32767" attributes="0"/>
-                              <Component id="addNewMedicationButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="editMedicationButton" min="-2" max="-2" attributes="0"/>
+                                  <Component id="addNewMedicationButton" alignment="1" min="-2" max="-2" attributes="0"/>
+                              </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="stopMedicationButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace pref="30" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -945,15 +971,19 @@
                                 <StringItem index="4" value="Celexa, a XX dose taken 5 times daily for horrible pain and random spazzing"/>
                               </StringArray>
                             </Property>
+                            <Property name="selectionMode" type="int" value="0"/>
                             <Property name="name" type="java.lang.String" value="PastMedsList" noResource="true"/>
                           </Properties>
+                          <Events>
+                            <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="currentMedicationsListValueChanged"/>
+                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>
                     <Component class="javax.swing.JButton" name="addNewMedicationButton">
                       <Properties>
                         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                          <action class="etvfit.ETVFitView" id="showMedBox" methodName="showMedBox"/>
+                          <action class="etvfit.ETVFitView" id="newMedication" methodName="newMedication"/>
                         </Property>
                         <Property name="icon" type="javax.swing.Icon" resourceKey="addNewMedicationButton.icon"/>
                         <Property name="text" type="java.lang.String" resourceKey="addNewMedicationButton.text"/>
@@ -964,7 +994,22 @@
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" resourceKey="stopMedicationButton.icon"/>
                         <Property name="text" type="java.lang.String" resourceKey="stopMedicationButton.text"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="name" type="java.lang.String" value="stopMedicationButton" noResource="true"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stopMedicationButtonActionPerformed"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="editMedicationButton">
+                      <Properties>
+                        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                          <action class="etvfit.ETVFitView" id="editMedication" methodName="editMedication"/>
+                        </Property>
+                        <Property name="icon" type="javax.swing.Icon" resourceKey="editMedicationButton.icon"/>
+                        <Property name="text" type="java.lang.String" resourceKey="editMedicationButton.text"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="name" type="java.lang.String" value="editMedicationButton" noResource="true"/>
                       </Properties>
                     </Component>
                   </SubComponents>
@@ -1032,6 +1077,7 @@
                                 <StringItem index="8" value=" "/>
                               </StringArray>
                             </Property>
+                            <Property name="selectionMode" type="int" value="0"/>
                             <Property name="name" type="java.lang.String" value="CurrentMedsList" noResource="true"/>
                           </Properties>
                         </Component>
@@ -1102,14 +1148,17 @@
                                           <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="jLabel25" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="primaryPhoneTextField" alignment="0" pref="134" max="32767" attributes="0"/>
-                                          <Component id="jTextField5" alignment="0" min="-2" pref="48" max="-2" attributes="0"/>
-                                          <Component id="jTextField4" min="-2" pref="32" max="-2" attributes="0"/>
-                                          <Component id="myAddress1TextField1" alignment="0" pref="134" max="32767" attributes="1"/>
-                                          <Component id="primaryNameTextField" alignment="0" pref="134" max="32767" attributes="0"/>
-                                          <Component id="myAddress2TextField1" alignment="0" pref="134" max="32767" attributes="1"/>
+                                          <Component id="primaryZipTextField" alignment="0" min="-2" pref="48" max="-2" attributes="0"/>
+                                          <Component id="primaryStateTextField" min="-2" pref="32" max="-2" attributes="0"/>
+                                          <Component id="primaryAddressTextField" alignment="0" pref="164" max="32767" attributes="1"/>
+                                          <Component id="primaryCityTextField" alignment="0" pref="164" max="32767" attributes="1"/>
+                                          <Component id="primaryNameTextField" alignment="1" pref="164" max="32767" attributes="0"/>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Component id="primaryPhoneTextField" pref="164" max="32767" attributes="0"/>
+                                          </Group>
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
@@ -1132,22 +1181,22 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel32" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="myAddress1TextField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="primaryAddressTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="myAddress2TextField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="primaryCityTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel33" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField4" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="primaryStateTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField5" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="primaryZipTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -1172,6 +1221,64 @@
                         <Property name="text" type="java.lang.String" resourceKey="primaryNameTextField.text"/>
                         <Property name="enabled" type="boolean" value="false"/>
                         <Property name="name" type="java.lang.String" value="primaryNameTextField" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel32">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="jLabel32.text"/>
+                        <Property name="name" type="java.lang.String" value="jLabel32" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="primaryAddressTextField">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="primaryAddressTextField.text"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="name" type="java.lang.String" value="primaryAddressTextField" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel33">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="jLabel33.text"/>
+                        <Property name="name" type="java.lang.String" value="jLabel33" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="primaryCityTextField">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="primaryCityTextField.text"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="name" type="java.lang.String" value="primaryCityTextField" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel4">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="jLabel4.text"/>
+                        <Property name="name" type="java.lang.String" value="jLabel4" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="primaryStateTextField">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="primaryStateTextField.text"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="name" type="java.lang.String" value="primaryStateTextField" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel5">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="jLabel5.text"/>
+                        <Property name="name" type="java.lang.String" value="jLabel5" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="primaryZipTextField">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="primaryZipTextField.text"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="name" type="java.lang.String" value="primaryZipTextField" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel25">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="jLabel25.text"/>
+                        <Property name="name" type="java.lang.String" value="jLabel25" noResource="true"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="primaryPhoneTextField">
@@ -1229,69 +1336,12 @@
                             </Property>
                             <Property name="icon" type="javax.swing.Icon" resourceKey="savePrimaryButton.icon"/>
                             <Property name="text" type="java.lang.String" resourceKey="savePrimaryButton.text"/>
+                            <Property name="enabled" type="boolean" value="false"/>
                             <Property name="name" type="java.lang.String" value="savePrimaryButton" noResource="true"/>
                           </Properties>
                         </Component>
                       </SubComponents>
                     </Container>
-                    <Component class="javax.swing.JLabel" name="jLabel32">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel32.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel32" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="myAddress1TextField1">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="myAddress1TextField1.text"/>
-                        <Property name="enabled" type="boolean" value="false"/>
-                        <Property name="name" type="java.lang.String" value="myAddress1TextField1" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel33">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel33.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel33" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="myAddress2TextField1">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="myAddress2TextField1.text"/>
-                        <Property name="enabled" type="boolean" value="false"/>
-                        <Property name="name" type="java.lang.String" value="myAddress2TextField1" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel4">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel4.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel4" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField4">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jTextField4.text"/>
-                        <Property name="enabled" type="boolean" value="false"/>
-                        <Property name="name" type="java.lang.String" value="jTextField4" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel5">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel5.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel5" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField5">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jTextField5.text"/>
-                        <Property name="enabled" type="boolean" value="false"/>
-                        <Property name="name" type="java.lang.String" value="jTextField5" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel25">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel25.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel25" noResource="true"/>
-                      </Properties>
-                    </Component>
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="specialistPanel">
@@ -1326,12 +1376,12 @@
                                                   <Component id="jLabelName1" alignment="0" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                               <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                                  <Component id="jTextField7" alignment="0" min="-2" pref="32" max="-2" attributes="0"/>
-                                                  <Component id="specialistAddress1TextField" alignment="0" max="32767" attributes="1"/>
-                                                  <Component id="myAddress2TextField2" alignment="0" max="32767" attributes="1"/>
-                                                  <Component id="jTextField6" alignment="0" min="-2" pref="48" max="-2" attributes="0"/>
-                                                  <Component id="specialistNameTextField" alignment="0" max="32767" attributes="1"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="specialistStateTextField" alignment="0" min="-2" pref="32" max="-2" attributes="0"/>
+                                                  <Component id="specialistCityTextField" alignment="0" pref="172" max="32767" attributes="1"/>
+                                                  <Component id="specialistZipTextField" alignment="0" min="-2" pref="48" max="-2" attributes="0"/>
+                                                  <Component id="specialistAddressTextField" alignment="0" pref="172" max="32767" attributes="1"/>
+                                                  <Component id="specialistNameTextField" alignment="0" pref="172" max="32767" attributes="1"/>
                                               </Group>
                                           </Group>
                                       </Group>
@@ -1349,17 +1399,12 @@
                                               </Group>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="specialistPhoneTextField" pref="85" max="32767" attributes="1"/>
-                                                  <Component id="specialtyTextField" min="-2" max="-2" attributes="1"/>
+                                                  <Component id="specialistPhoneTextField" min="-2" pref="91" max="-2" attributes="1"/>
+                                                  <Component id="specialtyTextField" alignment="0" pref="172" max="32767" attributes="1"/>
                                               </Group>
-                                              <EmptySpace min="-2" pref="125" max="-2" attributes="0"/>
                                           </Group>
                                           <Component id="specialistButtonsPanel" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
-                                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -1383,22 +1428,22 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel18" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="specialistAddress1TextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="specialistAddressTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel34" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="myAddress2TextField2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="specialistCityTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField7" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="specialistStateTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField6" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="specialistZipTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -1408,13 +1453,11 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
-                                  <Component id="specialtyTextField" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="specialtyTextField" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="specialistButtonsPanel" min="-2" max="-2" attributes="0"/>
+                              <Component id="specialistButtonsPanel" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1426,30 +1469,34 @@
                         <Property name="name" type="java.lang.String" value="jLabel17" noResource="true"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabelName1">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabelName1.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabelName1" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel18">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel18.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel18" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel19">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel19.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel19" noResource="true"/>
-                      </Properties>
-                    </Component>
                     <Component class="javax.swing.JSpinner" name="specialistSpinner">
                       <Properties>
+                        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                          <SpinnerModel initial="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                        </Property>
                         <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
                           <SpinnerEditor format="" type="3"/>
                         </Property>
                         <Property name="name" type="java.lang.String" value="specialistSpinner" noResource="true"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="specialistSpinnerStateChanged"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="addNewSpecialistButton">
+                      <Properties>
+                        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                          <action class="etvfit.ETVFitView" id="addSpecialist" methodName="addSpecialist"/>
+                        </Property>
+                        <Property name="icon" type="javax.swing.Icon" resourceKey="addNewSpecialistButton.icon"/>
+                        <Property name="text" type="java.lang.String" resourceKey="addNewSpecialistButton.text"/>
+                        <Property name="name" type="java.lang.String" value="addNewSpecialistButton" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabelName1">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="jLabelName1.text"/>
+                        <Property name="name" type="java.lang.String" value="jLabelName1" noResource="true"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="specialistNameTextField">
@@ -1459,11 +1506,62 @@
                         <Property name="name" type="java.lang.String" value="specialistNameTextField" noResource="true"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="specialistAddress1TextField">
+                    <Component class="javax.swing.JLabel" name="jLabel18">
                       <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="specialistAddress1TextField.text"/>
+                        <Property name="text" type="java.lang.String" resourceKey="jLabel18.text"/>
+                        <Property name="name" type="java.lang.String" value="jLabel18" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="specialistAddressTextField">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="specialistAddressTextField.text"/>
                         <Property name="enabled" type="boolean" value="false"/>
-                        <Property name="name" type="java.lang.String" value="specialistAddress1TextField" noResource="true"/>
+                        <Property name="name" type="java.lang.String" value="specialistAddressTextField" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel34">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="jLabel34.text"/>
+                        <Property name="name" type="java.lang.String" value="jLabel34" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="specialistCityTextField">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="specialistCityTextField.text"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="name" type="java.lang.String" value="specialistCityTextField" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel7">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="jLabel7.text"/>
+                        <Property name="name" type="java.lang.String" value="jLabel7" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="specialistStateTextField">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="specialistStateTextField.text"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="name" type="java.lang.String" value="specialistStateTextField" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel6">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="jLabel6.text"/>
+                        <Property name="name" type="java.lang.String" value="jLabel6" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="specialistZipTextField">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="specialistZipTextField.text"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="name" type="java.lang.String" value="specialistZipTextField" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel19">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="jLabel19.text"/>
+                        <Property name="name" type="java.lang.String" value="jLabel19" noResource="true"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="specialistPhoneTextField">
@@ -1473,18 +1571,17 @@
                         <Property name="name" type="java.lang.String" value="specialistPhoneTextField" noResource="true"/>
                       </Properties>
                     </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel12">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="jLabel12.text"/>
+                        <Property name="name" type="java.lang.String" value="jLabel12" noResource="true"/>
+                      </Properties>
+                    </Component>
                     <Component class="javax.swing.JTextField" name="specialtyTextField">
                       <Properties>
                         <Property name="text" type="java.lang.String" resourceKey="specialtyTextField.text"/>
                         <Property name="enabled" type="boolean" value="false"/>
                         <Property name="name" type="java.lang.String" value="specialtyTextField" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JButton" name="addNewSpecialistButton">
-                      <Properties>
-                        <Property name="icon" type="javax.swing.Icon" resourceKey="addNewSpecialistButton.icon"/>
-                        <Property name="text" type="java.lang.String" resourceKey="addNewSpecialistButton.text"/>
-                        <Property name="name" type="java.lang.String" value="addNewSpecialistButton" noResource="true"/>
                       </Properties>
                     </Component>
                     <Container class="javax.swing.JPanel" name="specialistButtonsPanel">
@@ -1495,20 +1592,32 @@
                       <Layout>
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="editSpecialistButton" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="saveSpecialistButton" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="editSpecialistButton" min="-2" pref="101" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="saveSpecialistButton" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
                                   <EmptySpace max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="editSpecialistButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="saveSpecialistButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="editSpecialistButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="saveSpecialistButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
@@ -1531,63 +1640,22 @@
                             </Property>
                             <Property name="icon" type="javax.swing.Icon" resourceKey="saveSpecialistButton.icon"/>
                             <Property name="text" type="java.lang.String" resourceKey="saveSpecialistButton.text"/>
+                            <Property name="enabled" type="boolean" value="false"/>
                             <Property name="name" type="java.lang.String" value="saveSpecialistButton" noResource="true"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="jButton1">
+                          <Properties>
+                            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                              <action class="etvfit.ETVFitView" id="removeSpecialist" methodName="removeSpecialist"/>
+                            </Property>
+                            <Property name="icon" type="javax.swing.Icon" resourceKey="jButton1.icon"/>
+                            <Property name="text" type="java.lang.String" resourceKey="jButton1.text"/>
+                            <Property name="name" type="java.lang.String" value="jButton1" noResource="true"/>
                           </Properties>
                         </Component>
                       </SubComponents>
                     </Container>
-                    <Component class="javax.swing.JLabel" name="jLabel6">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel6.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel6" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField6">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jTextField6.text"/>
-                        <Property name="enabled" type="boolean" value="false"/>
-                        <Property name="name" type="java.lang.String" value="jTextField6" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel7">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel7.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel7" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel34">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel34.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel34" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="myAddress2TextField2">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="myAddress2TextField2.text"/>
-                        <Property name="enabled" type="boolean" value="false"/>
-                        <Property name="name" type="java.lang.String" value="myAddress2TextField2" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField7">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jTextField7.text"/>
-                        <Property name="enabled" type="boolean" value="false"/>
-                        <Property name="name" type="java.lang.String" value="jTextField7" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel12">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel12.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel12" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JButton" name="jButton1">
-                      <Properties>
-                        <Property name="icon" type="javax.swing.Icon" resourceKey="jButton1.icon"/>
-                        <Property name="text" type="java.lang.String" resourceKey="jButton1.text"/>
-                        <Property name="name" type="java.lang.String" value="jButton1" noResource="true"/>
-                      </Properties>
-                    </Component>
                   </SubComponents>
                 </Container>
               </SubComponents>
@@ -1613,24 +1681,38 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-                                  <Component id="jScrollPane1" min="-2" pref="288" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                              <Component id="jButton3" alignment="0" max="32767" attributes="1"/>
-                                              <Component id="jButton2" alignment="0" min="-2" max="-2" attributes="1"/>
+                                      <Component id="jScrollPane1" alignment="0" min="-2" pref="288" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="10" pref="10" max="10" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="jLabel10" alignment="1" max="32767" attributes="1"/>
+                                              <Component id="jLabel9" alignment="1" max="32767" attributes="1"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="newChildPasswordTextField" max="32767" attributes="1"/>
+                                              <Component id="newChildUsernameTextField" alignment="0" pref="91" max="32767" attributes="1"/>
                                           </Group>
                                       </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                                          <Component id="jButton4" min="-2" max="-2" attributes="1"/>
-                                      </Group>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jButton6" max="32767" attributes="1"/>
+                                      <Component id="jButton3" alignment="0" pref="117" max="32767" attributes="1"/>
+                                      <Component id="jButton2" alignment="0" pref="117" max="32767" attributes="1"/>
                                   </Group>
                               </Group>
-                              <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="68" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="89" max="-2" attributes="0"/>
+                          <Component id="jButton5" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="174" max="32767" attributes="0"/>
+                          <Component id="jButton4" min="-2" max="-2" attributes="1"/>
+                          <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1643,17 +1725,32 @@
                                   <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jScrollPane1" min="-2" pref="121" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="newChildUsernameTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="newChildPasswordTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
                                   <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jButton3" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="jButton4" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="jButton6" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace pref="148" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jButton5" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="60" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1669,7 +1766,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JList" name="jList1">
+                    <Component class="javax.swing.JList" name="childrenList">
                       <Properties>
                         <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                           <StringArray count="5">
@@ -1680,8 +1777,11 @@
                             <StringItem index="4" value="Item 5"/>
                           </StringArray>
                         </Property>
-                        <Property name="name" type="java.lang.String" value="jList1" noResource="true"/>
+                        <Property name="name" type="java.lang.String" value="childrenList" noResource="true"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="childrenListValueChanged"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -1703,16 +1803,67 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="jButton3">
                   <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="etvfit.ETVFitView" id="editChild" methodName="editChild"/>
+                    </Property>
                     <Property name="icon" type="javax.swing.Icon" resourceKey="jButton3.icon"/>
                     <Property name="text" type="java.lang.String" resourceKey="jButton3.text"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                     <Property name="name" type="java.lang.String" value="jButton3" noResource="true"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JButton" name="jButton4">
                   <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="etvfit.ETVFitView" id="returnToParentMode" methodName="returnToParentMode"/>
+                    </Property>
                     <Property name="icon" type="javax.swing.Icon" resourceKey="jButton4.icon"/>
                     <Property name="text" type="java.lang.String" resourceKey="jButton4.text"/>
                     <Property name="name" type="java.lang.String" value="jButton4" noResource="true"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabel9">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" resourceKey="jLabel9.text"/>
+                    <Property name="name" type="java.lang.String" value="jLabel9" noResource="true"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabel10">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" resourceKey="jLabel10.text"/>
+                    <Property name="name" type="java.lang.String" value="jLabel10" noResource="true"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="newChildUsernameTextField">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" resourceKey="newChildUsernameTextField.text"/>
+                    <Property name="name" type="java.lang.String" value="newChildUsernameTextField" noResource="true"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="newChildPasswordTextField">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" resourceKey="newChildPasswordTextField.text"/>
+                    <Property name="name" type="java.lang.String" value="newChildPasswordTextField" noResource="true"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="jButton5">
+                  <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="etvfit.ETVFitView" id="addThisChild" methodName="addThisChild"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" resourceKey="jButton5.text"/>
+                    <Property name="name" type="java.lang.String" value="jButton5" noResource="true"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="jButton6">
+                  <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="etvfit.ETVFitView" id="removeChild" methodName="removeChild"/>
+                    </Property>
+                    <Property name="icon" type="javax.swing.Icon" resourceKey="jButton6.icon"/>
+                    <Property name="text" type="java.lang.String" resourceKey="jButton6.text"/>
+                    <Property name="enabled" type="boolean" value="false"/>
+                    <Property name="name" type="java.lang.String" value="jButton6" noResource="true"/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -1734,9 +1885,6 @@
             <Property name="name" type="java.lang.String" value="childEditingLabel" noResource="true"/>
             <Property name="opaque" type="boolean" value="true"/>
           </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="this.childEditingLabel.setVisible(false);"/>
-          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
