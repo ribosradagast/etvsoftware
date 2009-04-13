@@ -15,13 +15,6 @@ public class Parent extends User implements Serializable {
         super(username, password);
     }
 
-    public Parent(String username, String password,String name, int age, String address, String city, String state, int zip, String phone, String insurance, long insuranceNumber, String medicalHistory, String allergies, Doctor primaryPhysician)  {
-
-        super(  username,  password, name,  age,  address,  city,  state,  zip,
-                phone,  insurance,  insuranceNumber,  medicalHistory,  allergies, primaryPhysician) ;
-
-    }
-
     public void addNewChild(User kid){
         children.add(kid);
     }
