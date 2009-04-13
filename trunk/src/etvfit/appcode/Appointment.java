@@ -9,21 +9,29 @@ public class Appointment implements Serializable {
      *
      */
     private static final long serialVersionUID = -6027694335205665932L;
-    private Date date;			//date of appointment
+    private Calendar date;			//date of appointment
+
+    public Calendar getDate() {
+        return date;
+    }
+
+    public void setDate(Calendar date) {
+        this.date = date;
+    }
     private Doctor doctor;		//doctor appointment is with
     private String time;        //time of appt
     private String description;	//description of appointment (reason)
     private String results;		//results of appointment ("I have cancer", "I will die in 7 days", ect.)
 
     public Appointment() {
-        date = new Date();
+        date = Calendar.getInstance();
         doctor = new Doctor();
         time = "";
         description = "";
         results = "";
     }
 
-    public Appointment(Date date, Doctor doctor, String time, String description, String results) {
+    public Appointment(Calendar date, Doctor doctor, String time, String description, String results) {
         this.date = date;
         this.doctor = doctor;
         this.time = time;
@@ -39,18 +47,15 @@ public class Appointment implements Serializable {
         this.time = time;
     }
 
+    @Override
     public String toString() {
-        return description;
+        return "\""+ description +"\""+ " appointment with " + doctor;
     }
 
     public boolean appointmentInDays(int days) {
         //returns true if the appointment is in <= number of days
         //given as parameter; otherwise false
         return false;
-    }
-
-    public Date getDate() {
-        return date;
     }
 
     public String getDescription() {
@@ -63,10 +68,6 @@ public class Appointment implements Serializable {
 
     public String getResults() {
         return results;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public void setDescription(String description) {

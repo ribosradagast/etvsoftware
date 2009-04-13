@@ -350,12 +350,8 @@
                       <SubComponents>
                         <Component class="javax.swing.JList" name="remindersList">
                           <Properties>
-                            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                              <StringArray count="3">
-                                <StringItem index="0" value="Take your meds"/>
-                                <StringItem index="1" value="Get out of Bed"/>
-                                <StringItem index="2" value="Go to the Doctor"/>
-                              </StringArray>
+                            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                              <Connection code=" new DefaultListModel()" type="code"/>
                             </Property>
                             <Property name="name" type="java.lang.String" value="remindersList" noResource="true"/>
                           </Properties>
@@ -371,7 +367,6 @@
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" resourceKey="editAppointmentButton.icon"/>
                     <Property name="text" type="java.lang.String" resourceKey="editAppointmentButton.text"/>
-                    <Property name="enabled" type="boolean" value="false"/>
                     <Property name="name" type="java.lang.String" value="editAppointmentButton" noResource="true"/>
                   </Properties>
                 </Component>
@@ -719,7 +714,6 @@
                         </Property>
                         <Property name="icon" type="javax.swing.Icon" resourceKey="saveMyChangesButton.icon"/>
                         <Property name="text" type="java.lang.String" resourceKey="saveMyChangesButton.text"/>
-                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="name" type="java.lang.String" value="saveMyChangesButton" noResource="true"/>
                       </Properties>
                     </Component>
@@ -1008,7 +1002,6 @@
                         </Property>
                         <Property name="icon" type="javax.swing.Icon" resourceKey="editMedicationButton.icon"/>
                         <Property name="text" type="java.lang.String" resourceKey="editMedicationButton.text"/>
-                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="name" type="java.lang.String" value="editMedicationButton" noResource="true"/>
                       </Properties>
                     </Component>
@@ -1336,7 +1329,6 @@
                             </Property>
                             <Property name="icon" type="javax.swing.Icon" resourceKey="savePrimaryButton.icon"/>
                             <Property name="text" type="java.lang.String" resourceKey="savePrimaryButton.text"/>
-                            <Property name="enabled" type="boolean" value="false"/>
                             <Property name="name" type="java.lang.String" value="savePrimaryButton" noResource="true"/>
                           </Properties>
                         </Component>
@@ -1640,7 +1632,6 @@
                             </Property>
                             <Property name="icon" type="javax.swing.Icon" resourceKey="saveSpecialistButton.icon"/>
                             <Property name="text" type="java.lang.String" resourceKey="saveSpecialistButton.text"/>
-                            <Property name="enabled" type="boolean" value="false"/>
                             <Property name="name" type="java.lang.String" value="saveSpecialistButton" noResource="true"/>
                           </Properties>
                         </Component>
@@ -1808,7 +1799,6 @@
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" resourceKey="jButton3.icon"/>
                     <Property name="text" type="java.lang.String" resourceKey="jButton3.text"/>
-                    <Property name="enabled" type="boolean" value="false"/>
                     <Property name="name" type="java.lang.String" value="jButton3" noResource="true"/>
                   </Properties>
                 </Component>
@@ -1862,7 +1852,6 @@
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" resourceKey="jButton6.icon"/>
                     <Property name="text" type="java.lang.String" resourceKey="jButton6.text"/>
-                    <Property name="enabled" type="boolean" value="false"/>
                     <Property name="name" type="java.lang.String" value="jButton6" noResource="true"/>
                   </Properties>
                 </Component>
