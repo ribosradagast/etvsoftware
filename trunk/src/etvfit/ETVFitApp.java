@@ -3,9 +3,7 @@
  */
 package etvfit;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +26,65 @@ public class ETVFitApp extends SingleFrameApplication {
     public static final int cantFindFile = -2;
      public static final int noUsersAdded = -3;
     public static final String filename = "save.etvout";
+
+    /**
+     * A convenient static getter for the application instance.
+     * @return the instance of ETVFitApp
+     */
+    public static ETVFitApp getApplication() {
+        return Application.getInstance(ETVFitApp.class);
+    }
+
+    /**
+     * Main method launching the application.
+     */
+    public static void main(String[] args) {
+        launch(ETVFitApp.class, args);
+    }
+
+    /**
+     * This method is to initialize the specified window by injecting resources.
+     * Windows shown in our application come fully initialized from the GUI
+     * builder, so this additional configuration is not needed.
+     */
+    @Override
+    protected void configureWindow(java.awt.Window root) {
+    }
+
+    public void SaveInfo(User currentUser) {
+        ///Stick in this user
+        //it's already in my users...
+     //   dataHolder.users.remove(dataHolder.users.indexOf(currentUser));
+        //now add it back in
+      //   dataHolder.users.add(currentUser);
+
+        FileOutputStream fos = null;
+        {
+            ObjectOutputStream out = null;
+            try {
+                fos = new FileOutputStream(filename);
+                out = new ObjectOutputStream(fos);
+                out.writeObject(dataHolder);
+            } catch (IOException ex) {
+                Logger.getLogger(ETVFitApp.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    fos.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(ETVFitApp.class.getName()).log(Level.SEVERE, null, ex);
+
+                    System.exit(cantFindFile);
+                }
+                try {
+                    out.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(ETVFitApp.class.getName()).log(Level.SEVERE, null, ex);
+
+                    System.exit(cantFindFile);
+                }
+            }
+        }
+    }
 
     /**
      * At startup create and show the main frame of the application.
@@ -95,64 +152,5 @@ public class ETVFitApp extends SingleFrameApplication {
                 System.exit(notRightUser);
             }
 //        }
-    }
-
-    /**
-     * This method is to initialize the specified window by injecting resources.
-     * Windows shown in our application come fully initialized from the GUI
-     * builder, so this additional configuration is not needed.
-     */
-    @Override
-    protected void configureWindow(java.awt.Window root) {
-    }
-
-    public void SaveInfo(User currentUser) {
-        ///Stick in this user
-        //it's already in my users...
-     //   dataHolder.users.remove(dataHolder.users.indexOf(currentUser));
-        //now add it back in
-      //   dataHolder.users.add(currentUser);
-
-        FileOutputStream fos = null;
-        {
-            ObjectOutputStream out = null;
-            try {
-                fos = new FileOutputStream(filename);
-                out = new ObjectOutputStream(fos);
-                out.writeObject(dataHolder);
-            } catch (IOException ex) {
-                Logger.getLogger(ETVFitApp.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                try {
-                    fos.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(ETVFitApp.class.getName()).log(Level.SEVERE, null, ex);
-
-                    System.exit(cantFindFile);
-                }
-                try {
-                    out.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(ETVFitApp.class.getName()).log(Level.SEVERE, null, ex);
-
-                    System.exit(cantFindFile);
-                }
-            }
-        }
-    }
-
-    /**
-     * A convenient static getter for the application instance.
-     * @return the instance of ETVFitApp
-     */
-    public static ETVFitApp getApplication() {
-        return Application.getInstance(ETVFitApp.class);
-    }
-
-    /**
-     * Main method launching the application.
-     */
-    public static void main(String[] args) {
-        launch(ETVFitApp.class, args);
     }
 }

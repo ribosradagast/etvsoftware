@@ -24,8 +24,65 @@ public class ETVFitManageUsers extends javax.swing.JDialog {
     public static final int RET_CANCEL = 0;
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                Vector v = new Vector<User>();
+                v.add(new User("username", "password","Name1",1,
+                        "address", "city", "state", 2, "phone",
+                        "insurance",3, "medicalHistory",
+                        "allergies")) ;
+
+                  v.add(new User("username", "password","Name2",1,
+                        "address", "city", "state", 2, "phone",
+                        "insurance",3, "medicalHistory",
+                        "allergies")) ;
+                ETVFitManageUsers dialog = new ETVFitManageUsers(new javax.swing.JFrame(), true, v);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+
+                    @Override
+					public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
+
     public Vector<User> users;
 
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addMeButton;
+
+    private javax.swing.JButton jButton1;
+
+    private javax.swing.JLabel jLabel1;
+
+    private javax.swing.JLabel jLabel2;
+
+    private javax.swing.JLabel jLabel3;
+
+    private javax.swing.JScrollPane jScrollPane1;
+
+    private javax.swing.JLabel newUserLabel;
+
+    private javax.swing.JButton okButton;
+
+    private javax.swing.JTextField passTextField;
+
+    private javax.swing.JButton removeUserButton;
+
+    private javax.swing.JTextField userTextField;
+
+
+    private javax.swing.JList usersList;
+    // End of variables declaration//GEN-END:variables
+    private int returnStatus = RET_CANCEL;
     /** Creates new form ETVFitManageUsers */
     public ETVFitManageUsers(java.awt.Frame parent, boolean modal, Vector<User> users) {
         super(parent, modal);
@@ -37,12 +94,43 @@ public class ETVFitManageUsers extends javax.swing.JDialog {
         usersList.setListData(this.users);
 
     }
+    @Action
+    public void addUser() {
+        if (usersList.isSelectionEmpty()) {
+            //then we must be adding a new one
+            User newUser = new Parent(userTextField.getText(), passTextField.getText());
+            users.add(newUser);
 
+            //Update the List
+            usersList.setListData(this.users);
+        } else {
+            //get the index of the one that's being changed and update it in the "users" array
+            int index = usersList.getSelectedIndex();
+            users.get(index).setUsername(userTextField.getText());
+            users.get(index).setPassword(passTextField.getText());
+        }
+
+        //disable the textboxes and clear them.
+        userTextField.setEnabled(false);
+        passTextField.setEnabled(false);
+        userTextField.setText("");
+        passTextField.setText("");
+        addMeButton.setVisible(false);
+        newUserLabel.setVisible(false);
+    }
+    /** Closes the dialog */
+    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
+        doClose(RET_CANCEL);
+    }//GEN-LAST:event_closeDialog
+    private void doClose(int retStatus) {
+        returnStatus = retStatus;
+        setVisible(false);
+        dispose();
+    }
     /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
     public int getReturnStatus() {
         return returnStatus;
     }
-
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -70,7 +158,8 @@ public class ETVFitManageUsers extends javax.swing.JDialog {
         setModal(true);
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
+            @Override
+			public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
         });
@@ -87,8 +176,8 @@ public class ETVFitManageUsers extends javax.swing.JDialog {
 
         usersList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
+            public int getSize() { return strings.length; }
         });
         usersList.setListData(users);
         usersList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -114,7 +203,8 @@ public class ETVFitManageUsers extends javax.swing.JDialog {
         userTextField.setAction(actionMap.get("boxEdited")); // NOI18N
         userTextField.setName("userTextField"); // NOI18N
         userTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
+            @Override
+			public void keyTyped(java.awt.event.KeyEvent evt) {
                 ETVFitManageUsers.this.keyTyped(evt);
             }
         });
@@ -123,7 +213,8 @@ public class ETVFitManageUsers extends javax.swing.JDialog {
         passTextField.setAction(actionMap.get("boxEdited")); // NOI18N
         passTextField.setName("passTextField"); // NOI18N
         passTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
+            @Override
+			public void keyTyped(java.awt.event.KeyEvent evt) {
                 ETVFitManageUsers.this.keyTyped(evt);
             }
         });
@@ -215,16 +306,11 @@ public class ETVFitManageUsers extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    private void keyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyTyped
+    
+        addMeButton.setVisible(true);
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        doClose(RET_OK);
-    }//GEN-LAST:event_okButtonActionPerformed
-
-    /** Closes the dialog */
-    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
-        doClose(RET_CANCEL);
-    }//GEN-LAST:event_closeDialog
-
+    }//GEN-LAST:event_keyTyped
     private void listValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listValueChanged
 
         newUserLabel.setText("Please edit user information:");
@@ -241,48 +327,6 @@ public class ETVFitManageUsers extends javax.swing.JDialog {
             removeUserButton.setEnabled(true);
         }
     }//GEN-LAST:event_listValueChanged
-
-    private void keyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyTyped
-    
-        addMeButton.setVisible(true);
-
-    }//GEN-LAST:event_keyTyped
-
-    private void doClose(int retStatus) {
-        returnStatus = retStatus;
-        setVisible(false);
-        dispose();
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                Vector v = new Vector<User>();
-                v.add(new User("username", "password","Name1",1,
-                        "address", "city", "state", 2, "phone",
-                        "insurance",3, "medicalHistory",
-                        "allergies")) ;
-
-                  v.add(new User("username", "password","Name2",1,
-                        "address", "city", "state", 2, "phone",
-                        "insurance",3, "medicalHistory",
-                        "allergies")) ;
-                ETVFitManageUsers dialog = new ETVFitManageUsers(new javax.swing.JFrame(), true, v);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
-
     @Action
     public void newUser() {
         newUserLabel.setVisible(true);
@@ -298,32 +342,9 @@ public class ETVFitManageUsers extends javax.swing.JDialog {
         //disable the remove button
         removeUserButton.setEnabled(false);
     }
-
-    @Action
-    public void addUser() {
-        if (usersList.isSelectionEmpty()) {
-            //then we must be adding a new one
-            User newUser = new Parent(userTextField.getText(), passTextField.getText());
-            users.add(newUser);
-
-            //Update the List
-            usersList.setListData(this.users);
-        } else {
-            //get the index of the one that's being changed and update it in the "users" array
-            int index = usersList.getSelectedIndex();
-            users.get(index).setUsername(userTextField.getText());
-            users.get(index).setPassword(passTextField.getText());
-        }
-
-        //disable the textboxes and clear them.
-        userTextField.setEnabled(false);
-        passTextField.setEnabled(false);
-        userTextField.setText("");
-        passTextField.setText("");
-        addMeButton.setVisible(false);
-        newUserLabel.setVisible(false);
-    }
-
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        doClose(RET_OK);
+    }//GEN-LAST:event_okButtonActionPerformed
     @Action
     public void removeUser() {
         //pretty easy
@@ -345,21 +366,4 @@ public class ETVFitManageUsers extends javax.swing.JDialog {
         usersList.setListData(this.users);
 
     }
-
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addMeButton;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel newUserLabel;
-    private javax.swing.JButton okButton;
-    private javax.swing.JTextField passTextField;
-    private javax.swing.JButton removeUserButton;
-    private javax.swing.JTextField userTextField;
-    private javax.swing.JList usersList;
-    // End of variables declaration//GEN-END:variables
-    private int returnStatus = RET_CANCEL;
 }
