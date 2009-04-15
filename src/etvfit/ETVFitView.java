@@ -45,6 +45,177 @@ public class ETVFitView extends FrameView {
     Calendar today;
     ETVFitApp app;
 
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTabbedPane actionsTabbedPane;
+
+    private javax.swing.JButton addAppointmentButton;
+
+    private javax.swing.JButton addNewMedicationButton;
+
+    private javax.swing.JButton addNewSpecialistButton;
+
+    private javax.swing.JPanel allergiesPanel;
+
+    /**
+     * 
+     */
+    private javax.swing.JScrollPane allergiesScrollPane;
+
+    private javax.swing.JTextArea allergiesTextArea;
+
+    private javax.swing.JLabel childEditingLabel;
+
+    private javax.swing.JList childrenList;
+
+    private javax.swing.JList currentMedicationsList;
+
+    private javax.swing.JPanel currentMedicationsPanel;
+
+    private javax.swing.JScrollPane currentMedicationsScrollPane;
+
+    private javax.swing.JSeparator doctorSeparator;
+
+    private javax.swing.JPanel doctorTabPanel;
+
+    private javax.swing.JButton editAppointmentButton;
+
+    private javax.swing.JButton editMedicationButton;
+
+    private javax.swing.JButton editMyInfoButton;
+
+    private javax.swing.JButton editPrimaryButton;
+
+    private javax.swing.JButton editSpecialistButton;
+
+    private javax.swing.JRadioButton femaleRadioButton;
+
+    private javax.swing.ButtonGroup genderButtonGroup;
+
+    private javax.swing.JButton jButton1;
+
+    private javax.swing.JButton jButton2;
+
+    private javax.swing.JButton jButton3;
+
+    private javax.swing.JButton jButton4;
+
+    private javax.swing.JButton jButton5;
+
+    private javax.swing.JButton jButton6;
+
+    private javax.swing.JLabel jLabel1;
+
+    private javax.swing.JLabel jLabel10;
+
+    private javax.swing.JLabel jLabel12;
+
+    private javax.swing.JLabel jLabel13;
+
+    private javax.swing.JLabel jLabel17;
+
+    private javax.swing.JLabel jLabel18;
+
+    private javax.swing.JLabel jLabel19;
+
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelName1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JPanel mainPanel;
+    private javax.swing.JRadioButton maleRadioButton;
+    private javax.swing.JPanel medicalHistoryPanel;
+    private javax.swing.JTextArea medicalHistoryTextArea;
+    private javax.swing.JSeparator medicationsSeparator;
+    private javax.swing.JPanel medicationsTabPanel;
+    private javax.swing.JMenuBar menuBar;
+    private javax.swing.JSplitPane moreInfoPanel;
+    private javax.swing.JTextField myAddress1TextField;
+    private javax.swing.JTextField myAgeTextField;
+    private javax.swing.JTextField myCityTextField;
+    private javax.swing.JSeparator myInfoSeparator;
+    private javax.swing.JPanel myInfoTabPanel;
+    private javax.swing.JTextField myInsuranceNumberTextField;
+    private javax.swing.JTextField myInsuranceTextField;
+    private javax.swing.JTextField myNameTextField;
+    private javax.swing.JTextField myPhoneTextField;
+    private javax.swing.JTextField myStateTextField;
+    private javax.swing.JTextField myZipTextField;
+    private javax.swing.JTextField newChildPasswordTextField;
+    private javax.swing.JTextField newChildUsernameTextField;
+    private javax.swing.JButton nextWeekButton;
+    private javax.swing.JList pastMedicationsList;
+    private javax.swing.JPanel pastMedicationsPanel;
+    private javax.swing.JScrollPane pastMedicationsScrollPane;
+    private javax.swing.JPanel personalInfoPanel;
+    private javax.swing.JButton previousWeekButton;
+    private javax.swing.JTextField primaryAddressTextField;
+    private javax.swing.JPanel primaryButtonsPanel;
+    private javax.swing.JTextField primaryCityTextField;
+    private javax.swing.JLabel primaryNameLabel;
+    private javax.swing.JTextField primaryNameTextField;
+    private javax.swing.JPanel primaryPanel;
+    private javax.swing.JTextField primaryPhoneTextField;
+    private javax.swing.JTextField primaryStateTextField;
+    private javax.swing.JTextField primaryZipTextField;
+    private javax.swing.JProgressBar progressBar;
+    private javax.swing.JList remindersList;
+    private javax.swing.JPanel remindersPanel;
+    private javax.swing.JScrollPane remindersScrollPane;
+    private javax.swing.JMenuItem saveAllMenuItem;
+    private javax.swing.JButton saveMyChangesButton;
+    private javax.swing.JButton savePrimaryButton;
+    private javax.swing.JButton saveSpecialistButton;
+    private javax.swing.JScrollPane scheduleScrollPane;
+    private javax.swing.JPanel scheduleTabPanel;
+    private javax.swing.JTable scheduleTable;
+    private javax.swing.JTextField specialistAddressTextField;
+    private javax.swing.JPanel specialistButtonsPanel;
+    private javax.swing.JTextField specialistCityTextField;
+    private javax.swing.JTextField specialistNameTextField;
+    private javax.swing.JPanel specialistPanel;
+    private javax.swing.JTextField specialistPhoneTextField;
+    private javax.swing.JSpinner specialistSpinner;
+    private javax.swing.JTextField specialistStateTextField;
+    private javax.swing.JTextField specialistZipTextField;
+    private javax.swing.JTextField specialtyTextField;
+    private javax.swing.JLabel statusAnimationLabel;
+    private javax.swing.JLabel statusMessageLabel;
+    private javax.swing.JPanel statusPanel;
+    private javax.swing.JButton stopMedicationButton;
+    private javax.swing.JLabel todayLabel;
+    private javax.swing.JLabel welcomeLabel;
+    private javax.swing.JLabel welcomeNameLabel;
+    // End of variables declaration//GEN-END:variables
+    private final Timer messageTimer;
+    private final Timer busyIconTimer;
+    private final Icon idleIcon;
+    private final Icon[] busyIcons = new Icon[15];
+    private int busyIconIndex = 0;
+    private JDialog aboutBox;
     public ETVFitView(ETVFitApp app, User userOn) {
         super(app);
         this.user = userOn;
@@ -215,105 +386,150 @@ public class ETVFitView extends FrameView {
         });
     //</editor-fold>
     }
-
-    public void populateTodaysAppointments() {
-        remindersList.setModel(new DefaultListModel());
-
-        //Populate scheduleTable from appointments for this week
-        //loop through all of our appointments
-        for (Appointment a : user.appointments) {
-            //See if it falls within this week
-            if (a.getDate().get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH) &&
-                    a.getDate().get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
-                    a.getDate().get(Calendar.MONTH) == today.get(Calendar.MONTH)) {
-                ((DefaultListModel) remindersList.getModel()).addElement(a);
-            }
-        }
-    }
-
     @Action
-    public void showAboutBox() {
-        if (aboutBox == null) {
-            JFrame mainFrame = ETVFitApp.getApplication().getMainFrame();
-            aboutBox =
-                    new ETVFitAboutBox(mainFrame);
-            aboutBox.setLocationRelativeTo(mainFrame);
-        }
+    public void AddChild() {
 
-        ETVFitApp.getApplication().show(aboutBox);
+        //Show the "New child" stuff
+        jLabel9.setVisible(true);
+        jLabel10.setVisible(true);
+        newChildUsernameTextField.setVisible(true);
+        newChildPasswordTextField.setVisible(true);
+        jButton5.setVisible(true);
     }
-
-    private void loadData() {
-
-
-        // <editor-fold defaultstate="collapsed" desc="Populate MyInfo from User">
-        this.myNameTextField.setText(user.getName());
-        this.myAgeTextField.setText(String.valueOf(user.getAge()));
-
-        if (user.getSex() == User.MALE) {
-            maleRadioButton.setSelected(true);
-        } else {
-            femaleRadioButton.setSelected(true);
-        }
-
-        this.myAddress1TextField.setText(user.getAddress());
-        this.myCityTextField.setText(user.getCity());
-        this.myStateTextField.setText(user.getState());
-        this.myZipTextField.setText(String.valueOf(user.getZip()));
-        this.myPhoneTextField.setText(user.getPhone());
-        this.myInsuranceTextField.setText(user.getInsurance());
-        this.myInsuranceNumberTextField.setText(Long.toString(user.getInsuranceNumber()));
-
-        this.medicalHistoryTextArea.setText(user.getMedicalHistory());
-        this.allergiesTextArea.setText(user.getAllergies());
-        // </editor-fold>
-        // <editor-fold defaultstate="collapsed" desc="Populate Doctor from User.Doctor">
-
-        this.primaryNameTextField.setText(user.getPrimaryPhysician().getName());
-        this.primaryAddressTextField.setText(user.getPrimaryPhysician().getAddress());
-        this.primaryCityTextField.setText(user.getPrimaryPhysician().getCity());
-        this.primaryStateTextField.setText(user.getPrimaryPhysician().getState());
-        this.primaryZipTextField.setText(Integer.toString(user.getPrimaryPhysician().getZip()));
-        this.primaryPhoneTextField.setText(user.getPrimaryPhysician().getPhone());
-        // </editor-fold>
-
-        //Get number of specialists
-        //Update the spinner
+    @Action
+    public void addSpecialist() {
+        this.user.getSpecialists().add(new Doctor());
+        loadInSelectedSpecialist(this.user.getSpecialists().size() - 1);
         SpinnerNumberModel model = new SpinnerNumberModel(1, 1, user.getSpecialists().size(), 1);
         this.specialistSpinner.setModel(model);
+        this.specialistSpinner.setValue(user.getSpecialists().size());
+    }
+    @Action
+    public void addThisChild() {
+        ((Parent) user).addNewChild(new User(this.newChildUsernameTextField.getText(),
+                this.newChildPasswordTextField.getText()));
+        //Hide the "New child" stuff
+        jLabel9.setVisible(false);
+        jLabel10.setVisible(false);
+        newChildUsernameTextField.setVisible(false);
+        newChildPasswordTextField.setVisible(false);
+        jButton5.setVisible(false);
+        childrenList.setListData(((Parent) user).children);
+    }
+    private void childrenListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_childrenListValueChanged
 
-        //load in the selected one
-        loadInSelectedSpecialist(Integer.parseInt(this.specialistSpinner.getValue().toString()) - 1);
-        //monitor the spinner for changes
+        if (!childrenList.isSelectionEmpty()) {
+            jButton3.setEnabled(true);
+            jButton6.setEnabled(true);
+        } else {
+            jButton3.setEnabled(false);
+            this.jButton6.setEnabled(false);
+        }
+    }//GEN-LAST:event_childrenListValueChanged
+    private void currentMedicationsListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_currentMedicationsListValueChanged
+        if (!currentMedicationsList.isSelectionEmpty()) {
+            editMedicationButton.setEnabled(true);
+            this.stopMedicationButton.setEnabled(true);
+        } else {
+            editMedicationButton.setEnabled(false);
+            this.stopMedicationButton.setEnabled(false);
+        }
+    }//GEN-LAST:event_currentMedicationsListValueChanged
+    @Action
+    public void editAppointment() {
 
+        Vector<Doctor> myDocs = new Vector<Doctor>();
+        myDocs.add(user.getPrimaryPhysician());
+        myDocs.addAll(user.getSpecialists());
 
-        populateMedications();
+        Appointment editAppt = (Appointment) scheduleTable.getValueAt(scheduleTable.getSelectedRow(), scheduleTable.getSelectedColumn());
+        JFrame mainFrame = ETVFitApp.getApplication().getMainFrame();
 
-        populateAppointments();
+        ETVFitAppointmentBox appointmentBox = new ETVFitAppointmentBox(mainFrame, true, editAppt, myDocs);
+        appointmentBox.setLocationRelativeTo(mainFrame);
 
-        try {
-            childrenList.setEnabled(true);
-            childrenList.setListData(((Parent) user).children);
-        } catch (ClassCastException e) {
-            //they're not a parent...get rid of that list
-            childrenList.setEnabled(false);
+        ETVFitApp.getApplication().show(appointmentBox);
+        if (appointmentBox.getReturnStatus() == ETVFitAppointmentBox.RET_OK) {
+            populateAppointments();
         }
 
     }
+    @Action
+    public void editChild() {
 
-    private void loadInSelectedSpecialist(
-            int selected) {
-        //load in the selected one
-        Doctor specialistOn = user.getSpecialists().get(selected);
-        this.specialistNameTextField.setText(specialistOn.getName());
-        this.specialistAddressTextField.setText(specialistOn.getAddress());
-        this.specialistCityTextField.setText(specialistOn.getCity());
-        this.specialistStateTextField.setText(specialistOn.getState());
-        this.specialistZipTextField.setText(Integer.toString(specialistOn.getZip()));
-        this.specialistPhoneTextField.setText(specialistOn.getPhone());
-        this.specialtyTextField.setText(specialistOn.getSpeciality());
+        JOptionPane.showMessageDialog(new java.awt.Frame(),
+                "Now entering Child-Editing Mode, where you can change the information of your child.  \n" +
+                "Your information fields will be replaced by those of your selected child.\n" +
+                "To return to your information, press the \"Return to Parent Mode\" button.",
+                "Child-Editing Mode", JOptionPane.INFORMATION_MESSAGE);
+        prevUser =
+                user;
+        user =
+                ((Parent) user).children.get(childrenList.getSelectedIndex());
+        // user=login.getUser();
+        loadData();
+
+        jButton4.setVisible(true);
+        jButton6.setVisible(false);
+        jButton2.setVisible(false);
+        jButton3.setVisible(false);
+        this.childEditingLabel.setVisible(true);
     }
+    @Action
+    public void editMedication() {
+        //Find the selected med
+        Medication selectedMed = user.medications.get(currentMedicationsList.getSelectedIndex());
+        JFrame mainFrame = ETVFitApp.getApplication().getMainFrame();
 
+        Vector<Doctor> myDocs = new Vector<Doctor>();
+        myDocs.add(user.getPrimaryPhysician());
+        myDocs.addAll(user.getSpecialists());
+
+        ETVFitMedicationsBox medicationBox = new ETVFitMedicationsBox(mainFrame, true, selectedMed, myDocs);
+        medicationBox.setLocationRelativeTo(mainFrame);
+
+        ETVFitApp.getApplication().show(medicationBox);
+        if (medicationBox.getReturnStatus() == ETVFitMedicationsBox.RET_OK) {
+            populateMedications();
+        } //Otherwise, don't do anything
+
+    }
+    @Action
+    public void EditMyInfo() {
+        for (Component o : this.personalInfoPanel.getComponents()) {
+            if (!o.getClass().isInstance(new JLabel())) {
+                o.setEnabled(true);
+            }
+
+        }
+        this.allergiesTextArea.setEditable(true);
+        this.allergiesTextArea.setEnabled(true);
+        this.medicalHistoryTextArea.setEnabled(true);
+        this.medicalHistoryTextArea.setEditable(true);
+        this.editMyInfoButton.setEnabled(false);
+    }
+    @Action
+    public void EditPrimaryInfo() {
+        for (Component o : this.primaryPanel.getComponents()) {
+            if (!o.getClass().isInstance(new JLabel())) {
+                o.setEnabled(true);
+            }
+
+        }
+        this.savePrimaryButton.setEnabled(true);
+        this.editPrimaryButton.setEnabled(false);
+    }
+    @Action
+    public void EditSecondaryInfo() {
+        for (Component o : this.specialistPanel.getComponents()) {
+            if (!o.getClass().isInstance(new JLabel())) {
+                o.setEnabled(true);
+            }
+
+        }
+        this.saveSpecialistButton.setEnabled(true);
+        this.editSpecialistButton.setEnabled(false);
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -885,8 +1101,8 @@ public class ETVFitView extends FrameView {
 
         currentMedicationsList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Lexapro, a XX dose taken 1 time daily for horrible pain and random spazzing", "Seroxa, a XX dose taken 2 times daily for horrible pain and random spazzing", "Prozac, a XX dose taken 3 times daily for horrible pain and random spazzing", "Luvox, a XX dose taken 4 times daily for horrible pain and random spazzing", "Celexa, a XX dose taken 5 times daily for horrible pain and random spazzing" };
-            public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
+            public int getSize() { return strings.length; }
         });
         currentMedicationsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         currentMedicationsList.setName("PastMedsList"); // NOI18N
@@ -959,8 +1175,8 @@ public class ETVFitView extends FrameView {
 
         pastMedicationsList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Marplan", "Manerix", "Nardil", "Parnate", "l-deprenyl", "Eldepryl", "Zelapar", "Emsam", " " };
-            public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
+            public int getSize() { return strings.length; }
         });
         pastMedicationsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         pastMedicationsList.setName("CurrentMedsList"); // NOI18N
@@ -1341,8 +1557,8 @@ public class ETVFitView extends FrameView {
 
         childrenList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
+            public int getSize() { return strings.length; }
         });
         childrenList.setName("childrenList"); // NOI18N
         childrenList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
@@ -1599,17 +1815,146 @@ public class ETVFitView extends FrameView {
         setMenuBar(menuBar);
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
+    private void loadData() {
 
-    private void currentMedicationsListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_currentMedicationsListValueChanged
-        if (!currentMedicationsList.isSelectionEmpty()) {
-            editMedicationButton.setEnabled(true);
-            this.stopMedicationButton.setEnabled(true);
+
+        // <editor-fold defaultstate="collapsed" desc="Populate MyInfo from User">
+        this.myNameTextField.setText(user.getName());
+        this.myAgeTextField.setText(String.valueOf(user.getAge()));
+
+        if (user.getSex() == User.MALE) {
+            maleRadioButton.setSelected(true);
         } else {
-            editMedicationButton.setEnabled(false);
-            this.stopMedicationButton.setEnabled(false);
+            femaleRadioButton.setSelected(true);
         }
-    }//GEN-LAST:event_currentMedicationsListValueChanged
 
+        this.myAddress1TextField.setText(user.getAddress());
+        this.myCityTextField.setText(user.getCity());
+        this.myStateTextField.setText(user.getState());
+        this.myZipTextField.setText(String.valueOf(user.getZip()));
+        this.myPhoneTextField.setText(user.getPhone());
+        this.myInsuranceTextField.setText(user.getInsurance());
+        this.myInsuranceNumberTextField.setText(Long.toString(user.getInsuranceNumber()));
+
+        this.medicalHistoryTextArea.setText(user.getMedicalHistory());
+        this.allergiesTextArea.setText(user.getAllergies());
+        // </editor-fold>
+        // <editor-fold defaultstate="collapsed" desc="Populate Doctor from User.Doctor">
+
+        this.primaryNameTextField.setText(user.getPrimaryPhysician().getName());
+        this.primaryAddressTextField.setText(user.getPrimaryPhysician().getAddress());
+        this.primaryCityTextField.setText(user.getPrimaryPhysician().getCity());
+        this.primaryStateTextField.setText(user.getPrimaryPhysician().getState());
+        this.primaryZipTextField.setText(Integer.toString(user.getPrimaryPhysician().getZip()));
+        this.primaryPhoneTextField.setText(user.getPrimaryPhysician().getPhone());
+        // </editor-fold>
+
+        //Get number of specialists
+        //Update the spinner
+        SpinnerNumberModel model = new SpinnerNumberModel(1, 1, user.getSpecialists().size(), 1);
+        this.specialistSpinner.setModel(model);
+
+        //load in the selected one
+        loadInSelectedSpecialist(Integer.parseInt(this.specialistSpinner.getValue().toString()) - 1);
+        //monitor the spinner for changes
+
+
+        populateMedications();
+
+        populateAppointments();
+
+        try {
+            childrenList.setEnabled(true);
+            childrenList.setListData(((Parent) user).children);
+        } catch (ClassCastException e) {
+            //they're not a parent...get rid of that list
+            childrenList.setEnabled(false);
+        }
+
+    }
+    private void loadInSelectedSpecialist(
+            int selected) {
+        //load in the selected one
+        Doctor specialistOn = user.getSpecialists().get(selected);
+        this.specialistNameTextField.setText(specialistOn.getName());
+        this.specialistAddressTextField.setText(specialistOn.getAddress());
+        this.specialistCityTextField.setText(specialistOn.getCity());
+        this.specialistStateTextField.setText(specialistOn.getState());
+        this.specialistZipTextField.setText(Integer.toString(specialistOn.getZip()));
+        this.specialistPhoneTextField.setText(specialistOn.getPhone());
+        this.specialtyTextField.setText(specialistOn.getSpeciality());
+    }
+    @Action
+    public void newAppointment() {
+        if (!user.getPrimaryPhysician().getName().equals("")) {
+
+            Vector<Doctor> myDocs = new Vector<Doctor>();
+            myDocs.add(user.getPrimaryPhysician());
+            myDocs.addAll(user.getSpecialists());
+
+            Appointment newAppt = new Appointment();
+            JFrame mainFrame = ETVFitApp.getApplication().getMainFrame();
+
+            ETVFitAppointmentBox appointmentBox = new ETVFitAppointmentBox(mainFrame, true, newAppt, myDocs);
+            appointmentBox.setLocationRelativeTo(mainFrame);
+
+            ETVFitApp.getApplication().show(appointmentBox);
+            if (appointmentBox.getReturnStatus() == ETVFitAppointmentBox.RET_OK) {
+
+                this.user.appointments.add(newAppt);
+                populateAppointments();
+
+            }//Otherwise, don't add it
+
+
+        } else {
+            JOptionPane.showMessageDialog(new java.awt.Frame(),
+                    "You must have a Primary Care Physician to add Appointments",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+    @Action
+    public void newMedication() {
+        if (!user.getPrimaryPhysician().getName().equals("")) {
+
+            Vector<Doctor> myDocs = new Vector<Doctor>();
+            myDocs.add(user.getPrimaryPhysician());
+            myDocs.addAll(user.getSpecialists());
+
+            Medication newMed = new Medication();
+            JFrame mainFrame = ETVFitApp.getApplication().getMainFrame();
+
+            ETVFitMedicationsBox medicationBox = new ETVFitMedicationsBox(mainFrame, true, newMed, myDocs);
+            medicationBox.setLocationRelativeTo(mainFrame);
+
+            ETVFitApp.getApplication().show(medicationBox);
+            if (medicationBox.getReturnStatus() == ETVFitMedicationsBox.RET_OK) {
+                this.user.medications.add(newMed);
+                populateMedications();
+
+            }//Otherwise, don't add it
+
+
+        } else {
+            JOptionPane.showMessageDialog(new java.awt.Frame(),
+                    "You must have a Primary Care Physician to add Medications",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+    @Action
+    public void nextWeek() {
+        endDate.add(Calendar.DAY_OF_MONTH, 7);
+        startDate.add(Calendar.DAY_OF_MONTH, 7);
+
+        DateFormat dfm = new SimpleDateFormat("MMMM dd, yyyy");
+        String niceDate = dfm.format(startDate.getTime());
+        TitledBorder title = BorderFactory.createTitledBorder("The week of: " + niceDate);
+        scheduleScrollPane.setBorder(title);
+        populateAppointments();
+
+    }
     private void populateAppointments() {
         scheduleTable.setModel(new DefaultTableModel(new Object[][]{
                     {"No items", "No items", "No Items", "No items", "No items", "No items", "No items"},
@@ -1656,7 +2001,24 @@ public class ETVFitView extends FrameView {
         }
         populateTodaysAppointments();
     }
+    private void populateMedications() {
+        currentMedicationsList.setListData(user.medications);
+        this.pastMedicationsList.setListData(user.getPriorMedications());
+    }
+    public void populateTodaysAppointments() {
+        remindersList.setModel(new DefaultListModel());
 
+        //Populate scheduleTable from appointments for this week
+        //loop through all of our appointments
+        for (Appointment a : user.appointments) {
+            //See if it falls within this week
+            if (a.getDate().get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH) &&
+                    a.getDate().get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+                    a.getDate().get(Calendar.MONTH) == today.get(Calendar.MONTH)) {
+                ((DefaultListModel) remindersList.getModel()).addElement(a);
+            }
+        }
+    }
     @Action
     public void previousWeek() {
         endDate.add(Calendar.DAY_OF_MONTH, -7);
@@ -1669,67 +2031,70 @@ public class ETVFitView extends FrameView {
         populateAppointments();
 
     }
-
     @Action
-    public void nextWeek() {
-        endDate.add(Calendar.DAY_OF_MONTH, 7);
-        startDate.add(Calendar.DAY_OF_MONTH, 7);
+    public void quitAction() {
+        //OK, Let's dis-allow Children (who are not Parents)
+        try {
+            //Some bogus statement to test for Parent or not
+            Parent p = ((Parent) user);
+            //if that statement executed, then prompt for saving, etc.
+            // Perform any other operations you might need
+            // before exit.
+            int n = JOptionPane.showConfirmDialog(
+                    new java.awt.Frame(),
+                    "Would you like to save before you exit?",
+                    "Save Result of Session?",
+                    JOptionPane.YES_NO_OPTION);
 
-        DateFormat dfm = new SimpleDateFormat("MMMM dd, yyyy");
-        String niceDate = dfm.format(startDate.getTime());
-        TitledBorder title = BorderFactory.createTitledBorder("The week of: " + niceDate);
-        scheduleScrollPane.setBorder(title);
-        populateAppointments();
-
-    }
-
-    private void populateMedications() {
-        currentMedicationsList.setListData(user.medications);
-        this.pastMedicationsList.setListData(user.getPriorMedications());
-    }
-
-    private void stopMedicationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopMedicationButtonActionPerformed
-        user.stopTaking(user.medications.get(currentMedicationsList.getSelectedIndex()));
-        //update the lists
-        populateMedications();
-    }//GEN-LAST:event_stopMedicationButtonActionPerformed
-
-    private void specialistSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_specialistSpinnerStateChanged
-        //Check to see if it's within range
-        if (Integer.parseInt(specialistSpinner.getValue().toString()) > 0 &&
-                Integer.parseInt(specialistSpinner.getValue().toString()) <= user.getSpecialists().size()) {
-            loadInSelectedSpecialist(Integer.parseInt(specialistSpinner.getValue().toString()) - 1);
-        } else {
-            specialistSpinner.setValue(1);
-        }
-    }//GEN-LAST:event_specialistSpinnerStateChanged
-
-    private void childrenListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_childrenListValueChanged
-
-        if (!childrenList.isSelectionEmpty()) {
-            jButton3.setEnabled(true);
-            jButton6.setEnabled(true);
-        } else {
-            jButton3.setEnabled(false);
-            this.jButton6.setEnabled(false);
-        }
-    }//GEN-LAST:event_childrenListValueChanged
-
-    @Action
-    public void EditMyInfo() {
-        for (Component o : this.personalInfoPanel.getComponents()) {
-            if (!o.getClass().isInstance(new JLabel())) {
-                o.setEnabled(true);
+            if (n == JOptionPane.YES_OPTION) {
+                this.app.SaveInfo(user);
             }
 
+        } catch (ClassCastException c) {
+            //If it's just a Child (User) then say so
+            JOptionPane.showMessageDialog(new java.awt.Frame(),
+                    "The results of this session will not be saved because you are a Child." +
+                    "\nIn order to save your session results, please have your Parent log on \n" +
+                    "and reenter your information through \"Child-Editing Mode.\"",
+                    "Child Mode", JOptionPane.ERROR_MESSAGE);
         }
-        this.allergiesTextArea.setEditable(true);
-        this.allergiesTextArea.setEnabled(true);
-        this.medicalHistoryTextArea.setEnabled(true);
-        this.medicalHistoryTextArea.setEditable(true);
-        this.editMyInfoButton.setEnabled(false);
-    }
 
+        this.getFrame().dispose();
+        System.exit(0);
+    }
+    @Action
+    public void removeChild() {
+        ((Parent) user).children.remove(((Parent) user).children.get(childrenList.getSelectedIndex()));
+        childrenList.setListData(((Parent) user).children);
+    }
+    @Action
+    public void removeSpecialist() {
+        if (this.user.getSpecialists().size() > 1) {
+            int removeIndex = Integer.parseInt(specialistSpinner.getValue().toString());
+            this.user.getSpecialists().remove(removeIndex - 1);
+            System.out.println(this.user.getSpecialists().size());
+            this.specialistSpinner.setValue(user.getSpecialists().size());
+            loadInSelectedSpecialist(this.user.getSpecialists().size() - 1);
+        } else {
+            JOptionPane.showMessageDialog(new java.awt.Frame(),
+                    "You must have at lease one Specialist",
+                    "Invalid Remove Operation", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+    @Action
+    public void returnToParentMode() {
+        user = prevUser;
+        prevUser =
+                null;
+        loadData();
+
+    }
+    @Action
+    public void saveAll() {
+        this.app.SaveInfo(user);
+
+    }
     @Action
     public void SaveMyInfo() {
         for (Component o : this.personalInfoPanel.getComponents()) {
@@ -1772,51 +2137,6 @@ public class ETVFitView extends FrameView {
 
 
     }
-
-    @Action
-    public void quitAction() {
-        //OK, Let's dis-allow Children (who are not Parents)
-        try {
-            //Some bogus statement to test for Parent or not
-            Parent p = ((Parent) user);
-            //if that statement executed, then prompt for saving, etc.
-            // Perform any other operations you might need
-            // before exit.
-            int n = JOptionPane.showConfirmDialog(
-                    new java.awt.Frame(),
-                    "Would you like to save before you exit?",
-                    "Save Result of Session?",
-                    JOptionPane.YES_NO_OPTION);
-
-            if (n == JOptionPane.YES_OPTION) {
-                this.app.SaveInfo(user);
-            }
-
-        } catch (ClassCastException c) {
-            //If it's just a Child (User) then say so
-            JOptionPane.showMessageDialog(new java.awt.Frame(),
-                    "The results of this session will not be saved because you are a Child." +
-                    "\nIn order to save your session results, please have your Parent log on \n" +
-                    "and reenter your information through \"Child-Editing Mode.\"",
-                    "Child Mode", JOptionPane.ERROR_MESSAGE);
-        }
-
-        this.getFrame().dispose();
-        System.exit(0);
-    }
-
-    @Action
-    public void EditPrimaryInfo() {
-        for (Component o : this.primaryPanel.getComponents()) {
-            if (!o.getClass().isInstance(new JLabel())) {
-                o.setEnabled(true);
-            }
-
-        }
-        this.savePrimaryButton.setEnabled(true);
-        this.editPrimaryButton.setEnabled(false);
-    }
-
     @Action
     public void savePrimaryInfo() {
         for (Component o : this.primaryPanel.getComponents()) {
@@ -1837,19 +2157,6 @@ public class ETVFitView extends FrameView {
         user.getPrimaryPhysician().setPhone(this.primaryPhoneTextField.getText());
     // </editor-fold>
     }
-
-    @Action
-    public void EditSecondaryInfo() {
-        for (Component o : this.specialistPanel.getComponents()) {
-            if (!o.getClass().isInstance(new JLabel())) {
-                o.setEnabled(true);
-            }
-
-        }
-        this.saveSpecialistButton.setEnabled(true);
-        this.editSpecialistButton.setEnabled(false);
-    }
-
     @Action
     public void SaveSpecialistInfo() {
         for (Component o : this.specialistPanel.getComponents()) {
@@ -1873,27 +2180,17 @@ public class ETVFitView extends FrameView {
         specialistOn.setSpeciality(this.specialtyTextField.getText());
     // </editor-fold>
     }
-
     @Action
-    public void addSpecialist() {
-        this.user.getSpecialists().add(new Doctor());
-        loadInSelectedSpecialist(this.user.getSpecialists().size() - 1);
-        SpinnerNumberModel model = new SpinnerNumberModel(1, 1, user.getSpecialists().size(), 1);
-        this.specialistSpinner.setModel(model);
-        this.specialistSpinner.setValue(user.getSpecialists().size());
+    public void showAboutBox() {
+        if (aboutBox == null) {
+            JFrame mainFrame = ETVFitApp.getApplication().getMainFrame();
+            aboutBox =
+                    new ETVFitAboutBox(mainFrame);
+            aboutBox.setLocationRelativeTo(mainFrame);
+        }
+
+        ETVFitApp.getApplication().show(aboutBox);
     }
-
-    @Action
-    public void AddChild() {
-
-        //Show the "New child" stuff
-        jLabel9.setVisible(true);
-        jLabel10.setVisible(true);
-        newChildUsernameTextField.setVisible(true);
-        newChildPasswordTextField.setVisible(true);
-        jButton5.setVisible(true);
-    }
-
     @Action
     public void showManageUsers() {
         //get this user and its children
@@ -1922,312 +2219,18 @@ public class ETVFitView extends FrameView {
         }
         mng.dispose();
     }
-
-    @Action
-    public void saveAll() {
-        this.app.SaveInfo(user);
-
-    }
-
-    @Action
-    public void newMedication() {
-        if (!user.getPrimaryPhysician().getName().equals("")) {
-
-            Vector<Doctor> myDocs = new Vector<Doctor>();
-            myDocs.add(user.getPrimaryPhysician());
-            myDocs.addAll(user.getSpecialists());
-
-            Medication newMed = new Medication();
-            JFrame mainFrame = ETVFitApp.getApplication().getMainFrame();
-
-            ETVFitMedicationsBox medicationBox = new ETVFitMedicationsBox(mainFrame, true, newMed, myDocs);
-            medicationBox.setLocationRelativeTo(mainFrame);
-
-            ETVFitApp.getApplication().show(medicationBox);
-            if (medicationBox.getReturnStatus() == ETVFitMedicationsBox.RET_OK) {
-                this.user.medications.add(newMed);
-                populateMedications();
-
-            }//Otherwise, don't add it
-
-
+    private void specialistSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_specialistSpinnerStateChanged
+        //Check to see if it's within range
+        if (Integer.parseInt(specialistSpinner.getValue().toString()) > 0 &&
+                Integer.parseInt(specialistSpinner.getValue().toString()) <= user.getSpecialists().size()) {
+            loadInSelectedSpecialist(Integer.parseInt(specialistSpinner.getValue().toString()) - 1);
         } else {
-            JOptionPane.showMessageDialog(new java.awt.Frame(),
-                    "You must have a Primary Care Physician to add Medications",
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            specialistSpinner.setValue(1);
         }
-
-    }
-
-    @Action
-    public void editMedication() {
-        //Find the selected med
-        Medication selectedMed = user.medications.get(currentMedicationsList.getSelectedIndex());
-        JFrame mainFrame = ETVFitApp.getApplication().getMainFrame();
-
-        Vector<Doctor> myDocs = new Vector<Doctor>();
-        myDocs.add(user.getPrimaryPhysician());
-        myDocs.addAll(user.getSpecialists());
-
-        ETVFitMedicationsBox medicationBox = new ETVFitMedicationsBox(mainFrame, true, selectedMed, myDocs);
-        medicationBox.setLocationRelativeTo(mainFrame);
-
-        ETVFitApp.getApplication().show(medicationBox);
-        if (medicationBox.getReturnStatus() == ETVFitMedicationsBox.RET_OK) {
-            populateMedications();
-        } //Otherwise, don't do anything
-
-    }
-
-    @Action
-    public void removeSpecialist() {
-        if (this.user.getSpecialists().size() > 1) {
-            int removeIndex = Integer.parseInt(specialistSpinner.getValue().toString());
-            this.user.getSpecialists().remove(removeIndex - 1);
-            System.out.println(this.user.getSpecialists().size());
-            this.specialistSpinner.setValue(user.getSpecialists().size());
-            loadInSelectedSpecialist(this.user.getSpecialists().size() - 1);
-        } else {
-            JOptionPane.showMessageDialog(new java.awt.Frame(),
-                    "You must have at lease one Specialist",
-                    "Invalid Remove Operation", JOptionPane.ERROR_MESSAGE);
-        }
-
-    }
-
-    @Action
-    public void editChild() {
-
-        JOptionPane.showMessageDialog(new java.awt.Frame(),
-                "Now entering Child-Editing Mode, where you can change the information of your child.  \n" +
-                "Your information fields will be replaced by those of your selected child.\n" +
-                "To return to your information, press the \"Return to Parent Mode\" button.",
-                "Child-Editing Mode", JOptionPane.INFORMATION_MESSAGE);
-        prevUser =
-                user;
-        user =
-                ((Parent) user).children.get(childrenList.getSelectedIndex());
-        // user=login.getUser();
-        loadData();
-
-        jButton4.setVisible(true);
-        jButton6.setVisible(false);
-        jButton2.setVisible(false);
-        jButton3.setVisible(false);
-        this.childEditingLabel.setVisible(true);
-    }
-
-    @Action
-    public void addThisChild() {
-        ((Parent) user).addNewChild(new User(this.newChildUsernameTextField.getText(),
-                this.newChildPasswordTextField.getText()));
-        //Hide the "New child" stuff
-        jLabel9.setVisible(false);
-        jLabel10.setVisible(false);
-        newChildUsernameTextField.setVisible(false);
-        newChildPasswordTextField.setVisible(false);
-        jButton5.setVisible(false);
-        childrenList.setListData(((Parent) user).children);
-    }
-
-    @Action
-    public void returnToParentMode() {
-        user = prevUser;
-        prevUser =
-                null;
-        loadData();
-
-    }
-
-    @Action
-    public void removeChild() {
-        ((Parent) user).children.remove(((Parent) user).children.get(childrenList.getSelectedIndex()));
-        childrenList.setListData(((Parent) user).children);
-    }
-
-    @Action
-    public void newAppointment() {
-        if (!user.getPrimaryPhysician().getName().equals("")) {
-
-            Vector<Doctor> myDocs = new Vector<Doctor>();
-            myDocs.add(user.getPrimaryPhysician());
-            myDocs.addAll(user.getSpecialists());
-
-            Appointment newAppt = new Appointment();
-            JFrame mainFrame = ETVFitApp.getApplication().getMainFrame();
-
-            ETVFitAppointmentBox appointmentBox = new ETVFitAppointmentBox(mainFrame, true, newAppt, myDocs);
-            appointmentBox.setLocationRelativeTo(mainFrame);
-
-            ETVFitApp.getApplication().show(appointmentBox);
-            if (appointmentBox.getReturnStatus() == ETVFitAppointmentBox.RET_OK) {
-
-                this.user.appointments.add(newAppt);
-                populateAppointments();
-
-            }//Otherwise, don't add it
-
-
-        } else {
-            JOptionPane.showMessageDialog(new java.awt.Frame(),
-                    "You must have a Primary Care Physician to add Appointments",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
-    }
-
-    @Action
-    public void editAppointment() {
-
-        Vector<Doctor> myDocs = new Vector<Doctor>();
-        myDocs.add(user.getPrimaryPhysician());
-        myDocs.addAll(user.getSpecialists());
-
-        Appointment editAppt = (Appointment) scheduleTable.getValueAt(scheduleTable.getSelectedRow(), scheduleTable.getSelectedColumn());
-        JFrame mainFrame = ETVFitApp.getApplication().getMainFrame();
-
-        ETVFitAppointmentBox appointmentBox = new ETVFitAppointmentBox(mainFrame, true, editAppt, myDocs);
-        appointmentBox.setLocationRelativeTo(mainFrame);
-
-        ETVFitApp.getApplication().show(appointmentBox);
-        if (appointmentBox.getReturnStatus() == ETVFitAppointmentBox.RET_OK) {
-            populateAppointments();
-        }
-
-    }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTabbedPane actionsTabbedPane;
-    private javax.swing.JButton addAppointmentButton;
-    private javax.swing.JButton addNewMedicationButton;
-    private javax.swing.JButton addNewSpecialistButton;
-    private javax.swing.JPanel allergiesPanel;
-    private javax.swing.JScrollPane allergiesScrollPane;
-    private javax.swing.JTextArea allergiesTextArea;
-    private javax.swing.JLabel childEditingLabel;
-    private javax.swing.JList childrenList;
-    private javax.swing.JList currentMedicationsList;
-    private javax.swing.JPanel currentMedicationsPanel;
-    private javax.swing.JScrollPane currentMedicationsScrollPane;
-    private javax.swing.JSeparator doctorSeparator;
-    private javax.swing.JPanel doctorTabPanel;
-    private javax.swing.JButton editAppointmentButton;
-    private javax.swing.JButton editMedicationButton;
-    private javax.swing.JButton editMyInfoButton;
-    private javax.swing.JButton editPrimaryButton;
-    private javax.swing.JButton editSpecialistButton;
-    private javax.swing.JRadioButton femaleRadioButton;
-    private javax.swing.ButtonGroup genderButtonGroup;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
-    private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel33;
-    private javax.swing.JLabel jLabel34;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JLabel jLabelName1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JPanel mainPanel;
-    private javax.swing.JRadioButton maleRadioButton;
-    private javax.swing.JPanel medicalHistoryPanel;
-    private javax.swing.JTextArea medicalHistoryTextArea;
-    private javax.swing.JSeparator medicationsSeparator;
-    private javax.swing.JPanel medicationsTabPanel;
-    private javax.swing.JMenuBar menuBar;
-    private javax.swing.JSplitPane moreInfoPanel;
-    private javax.swing.JTextField myAddress1TextField;
-    private javax.swing.JTextField myAgeTextField;
-    private javax.swing.JTextField myCityTextField;
-    private javax.swing.JSeparator myInfoSeparator;
-    private javax.swing.JPanel myInfoTabPanel;
-    private javax.swing.JTextField myInsuranceNumberTextField;
-    private javax.swing.JTextField myInsuranceTextField;
-    private javax.swing.JTextField myNameTextField;
-    private javax.swing.JTextField myPhoneTextField;
-    private javax.swing.JTextField myStateTextField;
-    private javax.swing.JTextField myZipTextField;
-    private javax.swing.JTextField newChildPasswordTextField;
-    private javax.swing.JTextField newChildUsernameTextField;
-    private javax.swing.JButton nextWeekButton;
-    private javax.swing.JList pastMedicationsList;
-    private javax.swing.JPanel pastMedicationsPanel;
-    private javax.swing.JScrollPane pastMedicationsScrollPane;
-    private javax.swing.JPanel personalInfoPanel;
-    private javax.swing.JButton previousWeekButton;
-    private javax.swing.JTextField primaryAddressTextField;
-    private javax.swing.JPanel primaryButtonsPanel;
-    private javax.swing.JTextField primaryCityTextField;
-    private javax.swing.JLabel primaryNameLabel;
-    private javax.swing.JTextField primaryNameTextField;
-    private javax.swing.JPanel primaryPanel;
-    private javax.swing.JTextField primaryPhoneTextField;
-    private javax.swing.JTextField primaryStateTextField;
-    private javax.swing.JTextField primaryZipTextField;
-    private javax.swing.JProgressBar progressBar;
-    private javax.swing.JList remindersList;
-    private javax.swing.JPanel remindersPanel;
-    private javax.swing.JScrollPane remindersScrollPane;
-    private javax.swing.JMenuItem saveAllMenuItem;
-    private javax.swing.JButton saveMyChangesButton;
-    private javax.swing.JButton savePrimaryButton;
-    private javax.swing.JButton saveSpecialistButton;
-    private javax.swing.JScrollPane scheduleScrollPane;
-    private javax.swing.JPanel scheduleTabPanel;
-    private javax.swing.JTable scheduleTable;
-    private javax.swing.JTextField specialistAddressTextField;
-    private javax.swing.JPanel specialistButtonsPanel;
-    private javax.swing.JTextField specialistCityTextField;
-    private javax.swing.JTextField specialistNameTextField;
-    private javax.swing.JPanel specialistPanel;
-    private javax.swing.JTextField specialistPhoneTextField;
-    private javax.swing.JSpinner specialistSpinner;
-    private javax.swing.JTextField specialistStateTextField;
-    private javax.swing.JTextField specialistZipTextField;
-    private javax.swing.JTextField specialtyTextField;
-    private javax.swing.JLabel statusAnimationLabel;
-    private javax.swing.JLabel statusMessageLabel;
-    private javax.swing.JPanel statusPanel;
-    private javax.swing.JButton stopMedicationButton;
-    private javax.swing.JLabel todayLabel;
-    private javax.swing.JLabel welcomeLabel;
-    private javax.swing.JLabel welcomeNameLabel;
-    // End of variables declaration//GEN-END:variables
-    private final Timer messageTimer;
-    private final Timer busyIconTimer;
-    private final Icon idleIcon;
-    private final Icon[] busyIcons = new Icon[15];
-    private int busyIconIndex = 0;
-    private JDialog aboutBox;
+    }//GEN-LAST:event_specialistSpinnerStateChanged
+    private void stopMedicationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopMedicationButtonActionPerformed
+        user.stopTaking(user.medications.get(currentMedicationsList.getSelectedIndex()));
+        //update the lists
+        populateMedications();
+    }//GEN-LAST:event_stopMedicationButtonActionPerformed
 }

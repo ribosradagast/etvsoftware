@@ -24,7 +24,47 @@ public class Login extends javax.swing.JDialog {
     public static final int RET_CANCEL = 0;
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                Login dialog = new Login(new javax.swing.JFrame(), true, new Vector<User>());
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+
+                    @Override
+					public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
+
     Vector<User> currentUsers;
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cancelButton;
+
+    private javax.swing.JLabel jLabel1;
+
+    private javax.swing.JLabel jLabel2;
+
+    private javax.swing.JLabel jLabel3;
+
+    private javax.swing.JButton okButton;
+
+    private javax.swing.JPasswordField passPasswordField;
+
+    private javax.swing.JTextField userNameTextField;
+
+    // End of variables declaration//GEN-END:variables
+    private int returnStatus = RET_CANCEL;
+
+    private User loginAttemptUser;
 
     /** Creates new form Login */
     public Login(java.awt.Frame parent, boolean modal, Vector<User> currentUsers) {
@@ -32,12 +72,25 @@ public class Login extends javax.swing.JDialog {
         initComponents();
         this.currentUsers = currentUsers;
     }
-
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        doClose(RET_CANCEL);
+    }//GEN-LAST:event_cancelButtonActionPerformed
+    /** Closes the dialog */
+    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
+        doClose(RET_CANCEL);
+    }//GEN-LAST:event_closeDialog
+    private void doClose(int retStatus) {
+        returnStatus = retStatus;
+        setVisible(false);
+        dispose();
+    }
     /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
     public int getReturnStatus() {
         return returnStatus;
     }
-
+    public User getUser() {
+        return loginAttemptUser;
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -61,7 +114,8 @@ public class Login extends javax.swing.JDialog {
         setName("Form"); // NOI18N
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
+            @Override
+			public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
         });
@@ -149,7 +203,6 @@ public class Login extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
        System.out.println(passPasswordField);
        System.out.println (passPasswordField.getPassword());
@@ -168,58 +221,7 @@ public class Login extends javax.swing.JDialog {
                     "Invalid Login Attempt", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_okButtonActionPerformed
-
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        doClose(RET_CANCEL);
-    }//GEN-LAST:event_cancelButtonActionPerformed
-
-    /** Closes the dialog */
-    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
-        doClose(RET_CANCEL);
-    }//GEN-LAST:event_closeDialog
-
-    private void doClose(int retStatus) {
-        returnStatus = retStatus;
-        setVisible(false);
-        dispose();
-    }
-
-    public User getUser() {
-        return loginAttemptUser;
-    }
-
     public void setText(String t) {
         this.jLabel1.setText(t);
     }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                Login dialog = new Login(new javax.swing.JFrame(), true, new Vector<User>());
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cancelButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JButton okButton;
-    private javax.swing.JPasswordField passPasswordField;
-    private javax.swing.JTextField userNameTextField;
-    // End of variables declaration//GEN-END:variables
-    private int returnStatus = RET_CANCEL;
-    private User loginAttemptUser;
 }

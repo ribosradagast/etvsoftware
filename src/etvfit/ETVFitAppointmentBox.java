@@ -11,12 +11,8 @@
 package etvfit;
 
 import etvfit.appcode.*;
-import java.sql.Time;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Vector;
-import org.jdesktop.application.Action;
 
 /**
  *
@@ -28,9 +24,54 @@ public class ETVFitAppointmentBox extends javax.swing.JDialog {
     public static final int RET_CANCEL = 0;
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                ETVFitAppointmentBox dialog = new ETVFitAppointmentBox(new javax.swing.JFrame(), true, new Appointment(), new Vector<Doctor>());
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+
+                    @Override
+					public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
     private Appointment apptOn;
+
     private Vector<Doctor> docs;
 
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cancelButton;
+
+    private javax.swing.JComboBox jComboBox1;
+
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+
+    private javax.swing.JLabel jLabel3;
+
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JButton okButton;
+    private javax.swing.JTextArea reasonTextArea;
+    private javax.swing.JTextArea resultTextArea;
+    // End of variables declaration//GEN-END:variables
+    private int returnStatus = RET_CANCEL;
     /** Creates new form ETVFitAppointmentBox */
     public ETVFitAppointmentBox(java.awt.Frame parent, boolean modal, Appointment appt, Vector<Doctor> docs) {
         super(parent, modal);
@@ -56,7 +97,18 @@ public class ETVFitAppointmentBox extends javax.swing.JDialog {
         }
 
     }
-
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        doClose(RET_CANCEL);
+    }//GEN-LAST:event_cancelButtonActionPerformed
+    private void doClose(int retStatus) {
+        returnStatus = retStatus;
+        setVisible(false);
+        dispose();
+    }
+    /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
+    public int getReturnStatus() {
+        return returnStatus;
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -237,7 +289,6 @@ public class ETVFitAppointmentBox extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
 
         Calendar wanted=Calendar.getInstance();
@@ -251,58 +302,4 @@ public class ETVFitAppointmentBox extends javax.swing.JDialog {
         apptOn.setDoctor(docs.get(jComboBox1.getSelectedIndex()));
         doClose(RET_OK);
 }//GEN-LAST:event_okButtonActionPerformed
-
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        doClose(RET_CANCEL);
-    }//GEN-LAST:event_cancelButtonActionPerformed
-    /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
-    public int getReturnStatus() {
-        return returnStatus;
-    }
-
-    private void doClose(int retStatus) {
-        returnStatus = retStatus;
-        setVisible(false);
-        dispose();
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                ETVFitAppointmentBox dialog = new ETVFitAppointmentBox(new javax.swing.JFrame(), true, new Appointment(), new Vector<Doctor>());
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cancelButton;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JButton okButton;
-    private javax.swing.JTextArea reasonTextArea;
-    private javax.swing.JTextArea resultTextArea;
-    // End of variables declaration//GEN-END:variables
-    private int returnStatus = RET_CANCEL;
 }

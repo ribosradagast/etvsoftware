@@ -8,6 +8,10 @@ import org.jdesktop.application.Action;
 
 public class ETVFitAboutBox extends javax.swing.JDialog {
 
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton closeButton;
+    // End of variables declaration//GEN-END:variables
+
     public ETVFitAboutBox(java.awt.Frame parent) {
         super(parent);
         initComponents();
@@ -17,7 +21,7 @@ public class ETVFitAboutBox extends javax.swing.JDialog {
     @Action public void closeAboutBox() {
         dispose();
     }
-
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -129,9 +133,5 @@ public class ETVFitAboutBox extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton closeButton;
-    // End of variables declaration//GEN-END:variables
     
 }

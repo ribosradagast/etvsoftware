@@ -23,13 +23,56 @@ public class ETVFitMedicationsBox extends javax.swing.JDialog {
     public static final int RET_CANCEL = 0;
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                ETVFitMedicationsBox dialog = new ETVFitMedicationsBox(new javax.swing.JFrame(), true, new Medication(), new Vector<Doctor>());
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+
+                    @Override
+					public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
     private Medication medOn;
+
     private Vector<Doctor> docs;
 
-    public Medication getMedOn() {
-        return medOn;
-    }
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton closeButton1;
 
+    private javax.swing.JButton jButton1;
+
+    private javax.swing.JComboBox jComboBox1;
+
+    private javax.swing.JComboBox jComboBox2;
+
+    private javax.swing.JLabel jLabel1;
+
+    private javax.swing.JLabel jLabel2;
+
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    // End of variables declaration//GEN-END:variables
+    private int returnStatus = RET_CANCEL;
     /** Creates new form ETVFitMedicationsBox */
     public ETVFitMedicationsBox(java.awt.Frame parent, boolean modal, Medication med, Vector<Doctor> docs) {
         super(parent, modal);
@@ -60,18 +103,21 @@ public class ETVFitMedicationsBox extends javax.swing.JDialog {
         }
 
     }
-
-    /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
-    public int getReturnStatus() {
-        return returnStatus;
-    }
-
+    private void closeDialog(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeDialog
+        doClose(RET_CANCEL);
+    }//GEN-LAST:event_closeDialog
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
     }
-
+    public Medication getMedOn() {
+        return medOn;
+    }
+    /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
+    public int getReturnStatus() {
+        return returnStatus;
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -266,7 +312,6 @@ public class ETVFitMedicationsBox extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         //Save changes into object
         medOn.setName(jTextField3.getText());
@@ -288,48 +333,4 @@ public class ETVFitMedicationsBox extends javax.swing.JDialog {
        
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
-
-    private void closeDialog(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeDialog
-        doClose(RET_CANCEL);
-    }//GEN-LAST:event_closeDialog
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                ETVFitMedicationsBox dialog = new ETVFitMedicationsBox(new javax.swing.JFrame(), true, new Medication(), new Vector<Doctor>());
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton closeButton1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    // End of variables declaration//GEN-END:variables
-    private int returnStatus = RET_CANCEL;
 }
